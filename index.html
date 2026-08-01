@@ -286,7 +286,7 @@
                     <p class="product-desc">Lecteur de carte à puce USB compatible CHIFA</p>
                 </div>
 
-                <form id="order-form" class="order-form">
+                <form id="order-form" class="order-form" onsubmit="return false;">
                     <div id="statusMessage" class="status-msg"></div>
 
                     <div class="form-group">
@@ -323,24 +323,24 @@
 
                     <div class="form-group">
                         <label>👤 Nom complet</label>
-                        <input type="text" id="fullname" placeholder="Ex: Ahmed Benali" required>
+                        <input type="text" id="fullname" name="fullname" placeholder="Ex: Ahmed Benali" required>
                     </div>
 
                     <div class="form-group">
                         <label>📱 Téléphone</label>
-                        <input type="tel" id="phone" placeholder="Ex: 0550 12 34 56" required>
+                        <input type="tel" id="phone" name="phone" placeholder="Ex: 0550 12 34 56" required>
                     </div>
 
                     <div class="form-group">
                         <label>📍 Wilaya</label>
-                        <select id="order-wilaya">
+                        <select id="order-wilaya" name="wilaya">
                             <option value="">Sélectionnez votre wilaya</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>🏙️ Commune</label>
-                        <select id="order-commune">
+                        <select id="order-commune" name="commune">
                             <option value="">Sélectionnez d'abord une wilaya</option>
                         </select>
                         <div id="communeLoading" class="loading-text" style="display:none;">⏳ Chargement des communes...</div>
@@ -348,7 +348,7 @@
 
                     <div class="form-group">
                         <label>🏠 Adresse</label>
-                        <textarea id="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
+                        <textarea id="address" name="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
                     </div>
 
                     <button type="button" id="submitBtn" class="btn-submit">📩 Commander maintenant</button>
@@ -391,56 +391,74 @@
         const DISCOUNT_PER_EXTRA = 200;
         const MAX_QUANTITY = 4;
 
-        // ⚠️ Remplacer par votre endpoint Formspree
+        // ⚠️ Votre endpoint Formspree
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
 
         // ========================================
-        // DONNÉES DES WILAYAS (chargées depuis cities.json)
+        // DONNÉES DES WILAYAS
         // ========================================
-        let wilayaData = {};
-        let wilayaNames = [];
+        const wilayaData = {
+            'Alger': ['Alger Centre', 'Bab El Oued', 'El Harrach', 'Hussein Dey', 'Rouiba', 'Dar El Beida', 'Chéraga', 'Birkhadem', 'Baraki', 'Sidi Moussa', 'Bouzaréah', 'Ben Aknoun'],
+            'Oran': ['Oran Centre', 'Es Sénia', 'Bir El Djir', 'Mers El Kébir', 'Aïn El Turck', 'El Ançor'],
+            'Constantine': ['Constantine Centre', 'El Khroub', 'Aïn Smara', 'Hamma Bouziane', 'Zighoud Youcef'],
+            'Annaba': ['Annaba Centre', 'El Hadjar', 'Seraïdi', 'Berrahal', 'Chétaïbi'],
+            'Sétif': ['Sétif Centre', 'El Eulma', 'Aïn Arnat', 'Bougaâ', 'Tala Ulm'],
+            'Blida': ['Blida Centre', 'Ouled Yaïch', 'Boufarik', 'Soumaa', 'Méftah'],
+            'Béjaïa': ['Béjaïa Centre', 'Akbou', 'Amizour', 'El Kseur', 'Tichy'],
+            'Tizi Ouzou': ['Tizi Ouzou Centre', 'Azazga', 'Azeffoun', 'Boghni', 'Makouda'],
+            'Tlemcen': ['Tlemcen Centre', 'Maghnia', 'Ghazaouet', 'Mansoura', 'Remchi'],
+            'Mostaganem': ['Mostaganem Centre', 'Sour', 'Aïn Tedless', 'Sayada'],
+            'Boumerdès': ['Boumerdès Centre', 'Baghlia', 'Corso', 'Boudouaou', 'Ténès'],
+            'Tipaza': ['Tipaza Centre', 'Cherchell', 'Hadjout', 'Sidi Rached', 'Nador'],
+            'Djelfa': ['Djelfa Centre', 'Aïn Oussera', 'Messaâd', 'El Idrissia', 'Hassi Bahbah'],
+            'Médéa': ['Médéa Centre', 'Berrouaghia', 'Aïn Boucif', 'Khemis Miliana'],
+            'Laghouat': ['Laghouat Centre', 'Aflou', 'Kheneg'],
+            'Ghardaïa': ['Ghardaïa Centre', 'Berriane', 'Beni Isguen'],
+            'Béchar': ['Béchar Centre', 'Kenadsa', 'Beni Abbès', 'Labiodh'],
+            'Biskra': ['Biskra Centre', 'Tolga', 'El Kantara', 'Sidi Okba'],
+            'Ouargla': ['Ouargla Centre', 'Hassi Messaoud', 'Touggourt'],
+            'El Oued': ['El Oued Centre', 'Djamaa', 'Hassi Messaoud'],
+            'Tamanrasset': ['Tamanrasset Centre', 'In Salah', 'Abalessa', 'In Guezzam'],
+            'Adrar': ['Adrar Centre', 'Timimoun', 'Reggane', 'Fenoughil'],
+            'Saïda': ['Saïda Centre', 'Aïn El Hadjar', 'El Hassasna'],
+            'Sidi Bel Abbès': ['Sidi Bel Abbès Centre', 'Télagh', 'Ben Badis'],
+            'Skikda': ['Skikda Centre', 'El Hadaiek', 'Ben Azzouz', 'Azzaba'],
+            'Guelma': ['Guelma Centre', 'Bouchegouf', 'Héliopolis', 'El Fedjoudj'],
+            'Mascara': ['Mascara Centre', 'Tizi', 'Aïn Fekan'],
+            'Relizane': ['Relizane Centre', 'Zemmora', 'El Hamadna'],
+            'Aïn Témouchent': ['Aïn Témouchent Centre', 'Beni Saf', 'El Amria'],
+            'Aïn Defla': ['Aïn Defla Centre', 'Mekhatria', 'El Attaf'],
+            'Chlef': ['Chlef Centre', 'Ténès', 'El Karimia'],
+            'Bouira': ['Bouira Centre', 'Aïn El Hadjar', 'El Adjiba'],
+            'Tiaret': ['Tiaret Centre', 'Sougueur', 'Aïn Deheb'],
+            'Tissemsilt': ['Tissemsilt Centre', 'Bordj Bou Naâma', 'Lardjem'],
+            'El Bayadh': ['El Bayadh Centre', 'Brezina', 'Rogassa'],
+            'Naâma': ['Naâma Centre', 'Mécheria', 'Aïn Sefra'],
+            'Illizi': ['Illizi Centre', 'Djanet'],
+            'El Tarf': ['El Tarf Centre', 'Bouhadjar', 'El Kala'],
+            'Jijel': ['Jijel Centre', 'El Milia', 'Boudiaf'],
+            'Mila': ['Mila Centre', 'Rouached', 'Grarem Gouga'],
+            'Souk Ahras': ['Souk Ahras Centre', 'Ouled Moumene', 'Mekhadma'],
+            'Khenchela': ['Khenchela Centre', 'El Hamma', 'Bouhmama'],
+            'Oum El Bouaghi': ['Oum El Bouaghi Centre', 'Aïn Babouche', 'Kheirane'],
+            'Batna': ['Batna Centre', 'Barika', 'Aïn Touta'],
+            'Tébessa': ['Tébessa Centre', 'El Ogla', 'Bir El Ater'],
+            'Bordj Bou Arréridj': ['Bordj Bou Arréridj Centre', 'Ras El Oued', 'El Hamadiya'],
+            'M\'sila': ['M\'sila Centre', 'Bou Saâda', 'Aïn El Hadjel'],
+            'Tindouf': ['Tindouf Centre'],
+            'Timimoun': ['Timimoun Centre'],
+            'Bordj Badji Mokhtar': ['Bordj Badji Mokhtar Centre'],
+            'Ouled Djellal': ['Ouled Djellal Centre'],
+            'Béni Abbès': ['Béni Abbès Centre'],
+            'In Salah': ['In Salah Centre'],
+            'In Guezzam': ['In Guezzam Centre'],
+            'Touggourt': ['Touggourt Centre'],
+            'Djanet': ['Djanet Centre'],
+            'El M\'Ghair': ['El M\'Ghair Centre'],
+            'El Meniaa': ['El Meniaa Centre']
+        };
 
-        // ========================================
-        // CHARGER LES DONNÉES DEPUIS cities.json
-        // ========================================
-        async function loadWilayasData() {
-            try {
-                console.log('📡 Chargement des données depuis cities.json...');
-                
-                const response = await fetch('cities.json');
-                if (!response.ok) {
-                    throw new Error('Fichier cities.json non trouvé');
-                }
-                
-                const data = await response.json();
-                console.log('📥 Données reçues:', data.total_wilayas, 'wilayas,', data.total_communes, 'communes');
-                
-                // Organiser les données
-                wilayaData = {};
-                data.wilayas.forEach(wilaya => {
-                    const communes = data.communes
-                        .filter(c => c.wilaya_id === wilaya.wilaya_id)
-                        .map(c => c.commune_name_latin);
-                    
-                    if (communes.length > 0) {
-                        wilayaData[wilaya.wilaya_name_latin] = communes;
-                    }
-                });
-                
-                wilayaNames = Object.keys(wilayaData);
-                console.log(`✅ ${wilayaNames.length} wilayas chargées`);
-                console.log(`✅ ${Object.values(wilayaData).reduce((a,b) => a + b.length, 0)} communes chargées`);
-                
-                // Remplir le select
-                populateWilayas();
-                
-            } catch (error) {
-                console.error('❌ Erreur chargement:', error);
-                // Fallback : utiliser les données existantes
-                alert('⚠️ Erreur de chargement des données. Utilisation des données locales.');
-                populateWilayas();
-            }
-        }
+        const wilayaNames = Object.keys(wilayaData);
 
         // ========================================
         // FONCTIONS
@@ -448,18 +466,12 @@
         function populateWilayas() {
             const select = document.getElementById('order-wilaya');
             select.innerHTML = '<option value="">Sélectionnez votre wilaya</option>';
-            
-            // Si wilayaNames est vide, utiliser les données par défaut
-            const names = wilayaNames.length > 0 ? wilayaNames : Object.keys(wilayaData);
-            
-            names.sort().forEach(wilaya => {
+            wilayaNames.sort().forEach(wilaya => {
                 const option = document.createElement('option');
                 option.value = wilaya;
                 option.textContent = wilaya;
                 select.appendChild(option);
             });
-            
-            console.log(`📋 ${names.length} wilayas affichées dans le select`);
         }
 
         function populateCommunes(wilayaName) {
@@ -536,51 +548,40 @@
         }
 
         // ========================================
-        // ENVOI EMAIL VIA FORMSPREE (SANS CLÉ API)
+        // ENVOI EMAIL VIA FORMSPREE (avec FormData)
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
-            const message = `
-                📝 NOUVELLE COMMANDE - Lecteur CHIFA
-
-                👤 Client
-                Nom: ${data.fullname}
-                Téléphone: ${data.phone}
-                Wilaya: ${data.wilaya}
-                Commune: ${data.commune}
-                Adresse: ${data.address}
-
-                📦 Détail de la commande
-                Produit: Lecteur CHIFA Zoweetek
-                Quantité: ${data.quantity}
-                Sous-total: ${priceDetail.subtotal.toLocaleString()} DA
-                ${priceDetail.discount > 0 ? `Remise: -${priceDetail.discount.toLocaleString()} DA` : ''}
-                Livraison: ${priceDetail.fee.toLocaleString()} DA
-                Total: ${priceDetail.total.toLocaleString()} DA
-
-                📅 ${new Date().toLocaleString('fr-DZ')}
-            `;
+            // Créer un FormData pour imiter une soumission de formulaire
+            const formData = new FormData();
+            
+            formData.append('fullname', data.fullname);
+            formData.append('phone', data.phone);
+            formData.append('wilaya', data.wilaya);
+            formData.append('commune', data.commune);
+            formData.append('address', data.address);
+            formData.append('quantity', data.quantity);
+            formData.append('subtotal', priceDetail.subtotal.toLocaleString());
+            if (priceDetail.discount > 0) {
+                formData.append('discount', `- ${priceDetail.discount.toLocaleString()} DA`);
+            }
+            formData.append('delivery', priceDetail.fee.toLocaleString());
+            formData.append('total', priceDetail.total.toLocaleString());
+            formData.append('date', new Date().toLocaleString('fr-DZ'));
 
             try {
                 const response = await fetch(FORMSPREE_ENDPOINT, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        _subject: `📝 Nouvelle commande - ${data.fullname}`,
-                        message: message,
-                        _replyto: data.email || data.phone,
-                        _cc: 'berchichesamir@gmail.com'
-                    })
+                    // ⚠️ NE PAS mettre 'Content-Type' pour FormData
+                    body: formData
                 });
 
                 if (response.ok) {
                     console.log('✅ Email envoyé avec succès !');
                     return { success: true };
                 } else {
-                    const error = await response.json();
-                    console.error('❌ Erreur Formspree:', error);
-                    throw new Error('Erreur envoi email');
+                    const errorText = await response.text();
+                    console.error('❌ Erreur Formspree:', errorText);
+                    throw new Error(`Erreur ${response.status}: ${errorText}`);
                 }
             } catch (error) {
                 console.error('❌ Erreur:', error);
@@ -767,8 +768,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initialisation...');
 
-            // Charger les données depuis cities.json
-            loadWilayasData();
+            populateWilayas();
 
             document.getElementById('order-wilaya').addEventListener('change', function() {
                 populateCommunes(this.value);
@@ -824,7 +824,7 @@
 
                 document.getElementById('loading-overlay').style.display = 'flex';
 
-                // Envoyer l'email via Formspree
+                // Envoyer l'email via Formspree (avec FormData)
                 sendOrderEmail(data, priceDetail).then(result => {
                     document.getElementById('loading-overlay').style.display = 'none';
 
