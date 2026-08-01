@@ -385,19 +385,35 @@
     ======================================== -->
     <script>
         // ========================================
-        // CONFIGURATION BREVO (🔐 SÉCURISÉ)
+        // CONFIGURATION PAR DÉFAUT (sans clé API)
         // ========================================
-        // ⚠️ Remplacez par votre nouvelle clé API Brevo
-        const BREVO_CONFIG = {
-            apiKey: 'VOTRE_NOUVELLE_CLE_API_ICI',  // À remplacer
-            senderEmail: 'berchichesamir@gmail.com',
-            senderName: 'Lecteur CHIFA',
-            toEmail: 'berchichesamir@gmail.com'
-        };
+        
+    apiKey: '',  // ⚠️ Remplacez par votre nouvelle clé
+    senderEmail: 'berchichesamir@gmail.com',
+    senderName: 'Lecteur CHIFA',
+    toEmail: 'berchichesamir@gmail.com'
 
         const UNIT_PRICE = 4990;
         const DISCOUNT_PER_EXTRA = 200;
         const MAX_QUANTITY = 4;
+
+        // ========================================
+        // CHARGER LA CONFIGURATION DEPUIS config.js
+        // ========================================
+        async function loadBrevoConfig() {
+            try {
+                const response = await fetch('config.js');
+                if (response.ok) {
+                    const script = await response.text();
+                    eval(script);
+                    console.log('✅ Configuration Brevo chargée depuis config.js');
+                } else {
+                    console.warn('⚠️ Fichier config.js non trouvé, utilisation des valeurs par défaut');
+                }
+            } catch (error) {
+                console.warn('⚠️ Erreur chargement config.js:', error.message);
+            }
+        }
 
         // ========================================
         // DONNÉES DES WILAYAS
@@ -553,9 +569,15 @@
         }
 
         // ========================================
-        // ENVOI EMAIL VIA BREVO
+        // ENVOI EMAIL VIA BREVO (SANS CLÉ VISIBLE)
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
+            // Vérifier que la clé est chargée
+            if (!BREVO_CONFIG.apiKey) {
+                console.error('❌ Clé API Brevo manquante');
+                return { success: false, error: 'Clé API manquante. Vérifiez config.js' };
+            }
+
             const url = 'https://api.brevo.com/v3/smtp/email';
 
             const htmlContent = `
@@ -826,8 +848,11 @@
         // ========================================
         // INITIALISATION
         // ========================================
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 Initialisation...');
+
+            // Charger la configuration Brevo
+            await loadBrevoConfig();
 
             populateWilayas();
 
