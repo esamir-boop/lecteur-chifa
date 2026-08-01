@@ -384,7 +384,7 @@
          SCRIPTS
     ======================================== -->
     <script>
-        // ========================================
+        function populateWilayas() {
         // CONFIGURATION
         // ========================================
         const UNIT_PRICE = 4990;
@@ -397,66 +397,51 @@
         // ========================================
         // DONNÉES DES WILAYAS (TOUTES LES 69 WILAYAS)
         // ========================================
-        const wilayaData = {
-            'Adrar': ['Adrar Centre', 'Timimoun', 'Reggane', 'Fenoughil'],
-            'Alger': ['Alger Centre', 'Bab El Oued', 'El Harrach', 'Hussein Dey', 'Rouiba', 'Dar El Beida', 'Chéraga', 'Birkhadem', 'Baraki', 'Sidi Moussa', 'Bouzaréah', 'Ben Aknoun'],
-            'Annaba': ['Annaba Centre', 'El Hadjar', 'Seraïdi', 'Berrahal', 'Chétaïbi'],
-            'Aïn Defla': ['Aïn Defla Centre', 'Mekhatria', 'El Attaf'],
-            'Aïn Témouchent': ['Aïn Témouchent Centre', 'Beni Saf', 'El Amria'],
-            'Batna': ['Batna Centre', 'Barika', 'Aïn Touta'],
-            'Biskra': ['Biskra Centre', 'Tolga', 'El Kantara', 'Sidi Okba'],
-            'Blida': ['Blida Centre', 'Ouled Yaïch', 'Boufarik', 'Soumaa', 'Méftah'],
-            'Bordj Bou Arréridj': ['Bordj Bou Arréridj Centre', 'Ras El Oued', 'El Hamadiya'],
-            'Bouira': ['Bouira Centre', 'Aïn El Hadjar', 'El Adjiba'],
-            'Boumerdès': ['Boumerdès Centre', 'Baghlia', 'Corso', 'Boudouaou', 'Ténès'],
-            'Béchar': ['Béchar Centre', 'Kenadsa', 'Beni Abbès', 'Labiodh'],
-            'Béjaïa': ['Béjaïa Centre', 'Akbou', 'Amizour', 'El Kseur', 'Tichy'],
-            'Chlef': ['Chlef Centre', 'Ténès', 'El Karimia'],
-            'Constantine': ['Constantine Centre', 'El Khroub', 'Aïn Smara', 'Hamma Bouziane', 'Zighoud Youcef'],
-            'Djelfa': ['Djelfa Centre', 'Aïn Oussera', 'Messaâd', 'El Idrissia', 'Hassi Bahbah'],
-            'El Bayadh': ['El Bayadh Centre', 'Brezina', 'Rogassa'],
-            'El Oued': ['El Oued Centre', 'Djamaa', 'Hassi Messaoud'],
-            'El Tarf': ['El Tarf Centre', 'Bouhadjar', 'El Kala'],
-            'Ghardaïa': ['Ghardaïa Centre', 'Berriane', 'Beni Isguen'],
-            'Guelma': ['Guelma Centre', 'Bouchegouf', 'Héliopolis', 'El Fedjoudj'],
-            'Illizi': ['Illizi Centre', 'Djanet'],
-            'Jijel': ['Jijel Centre', 'El Milia', 'Boudiaf'],
-            'Khenchela': ['Khenchela Centre', 'El Hamma', 'Bouhmama'],
-            'Laghouat': ['Laghouat Centre', 'Aflou', 'Kheneg'],
-            'Mascara': ['Mascara Centre', 'Tizi', 'Aïn Fekan'],
-            'Mila': ['Mila Centre', 'Rouached', 'Grarem Gouga'],
-            'Mostaganem': ['Mostaganem Centre', 'Sour', 'Aïn Tedless', 'Sayada'],
-            'Médéa': ['Médéa Centre', 'Berrouaghia', 'Aïn Boucif', 'Khemis Miliana'],
-            'M\'sila': ['M\'sila Centre', 'Bou Saâda', 'Aïn El Hadjel'],
-            'Naâma': ['Naâma Centre', 'Mécheria', 'Aïn Sefra'],
-            'Oran': ['Oran Centre', 'Es Sénia', 'Bir El Djir', 'Mers El Kébir', 'Aïn El Turck', 'El Ançor'],
-            'Ouargla': ['Ouargla Centre', 'Hassi Messaoud', 'Touggourt'],
-            'Oum El Bouaghi': ['Oum El Bouaghi Centre', 'Aïn Babouche', 'Kheirane'],
-            'Relizane': ['Relizane Centre', 'Zemmora', 'El Hamadna'],
-            'Saïda': ['Saïda Centre', 'Aïn El Hadjar', 'El Hassasna'],
-            'Sidi Bel Abbès': ['Sidi Bel Abbès Centre', 'Télagh', 'Ben Badis'],
-            'Skikda': ['Skikda Centre', 'El Hadaiek', 'Ben Azzouz', 'Azzaba'],
-            'Souk Ahras': ['Souk Ahras Centre', 'Ouled Moumene', 'Mekhadma'],
-            'Sétif': ['Sétif Centre', 'El Eulma', 'Aïn Arnat', 'Bougaâ', 'Tala Ulm'],
-            'Tamanrasset': ['Tamanrasset Centre', 'In Salah', 'Abalessa', 'In Guezzam'],
-            'Tiaret': ['Tiaret Centre', 'Sougueur', 'Aïn Deheb'],
-            'Tindouf': ['Tindouf Centre'],
-            'Tipaza': ['Tipaza Centre', 'Cherchell', 'Hadjout', 'Sidi Rached', 'Nador'],
-            'Tissemsilt': ['Tissemsilt Centre', 'Bordj Bou Naâma', 'Lardjem'],
-            'Tizi Ouzou': ['Tizi Ouzou Centre', 'Azazga', 'Azeffoun', 'Boghni', 'Makouda'],
-            'Tlemcen': ['Tlemcen Centre', 'Maghnia', 'Ghazaouet', 'Mansoura', 'Remchi'],
-            'Tébessa': ['Tébessa Centre', 'El Ogla', 'Bir El Ater'],
-            'Béni Abbès': ['Béni Abbès Centre'],
-            'El M\'Ghair': ['El M\'Ghair Centre'],
-            'El Meniaa': ['El Meniaa Centre'],
-            'Bordj Badji Mokhtar': ['Bordj Badji Mokhtar Centre'],
-            'Timimoun': ['Timimoun Centre'],
-            'Touggourt': ['Touggourt Centre'],
-            'Djanet': ['Djanet Centre'],
-            'In Salah': ['In Salah Centre'],
-            'In Guezzam': ['In Guezzam Centre'],
-            'Ouled Djellal': ['Ouled Djellal Centre']
-        };
+       // ========================================
+// DONNÉES DES WILAYAS (chargées depuis cities.json)
+// ========================================
+let wilayaData = {};
+let wilayaNames = [];
+
+// ========================================
+// CHARGER LES DONNÉES DEPUIS cities.json
+// ========================================
+async function loadWilayasData() {
+    try {
+        console.log('📡 Chargement des données depuis cities.json...');
+        
+        const response = await fetch('cities.json');
+        if (!response.ok) {
+            throw new Error('Fichier cities.json non trouvé');
+        }
+        
+        const data = await response.json();
+        console.log(`📥 ${data.total_wilayas} wilayas, ${data.total_communes} communes`);
+        
+        // Organiser les données
+        wilayaData = {};
+        data.wilayas.forEach(wilaya => {
+            const communes = data.communes
+                .filter(c => c.wilaya_id === wilaya.wilaya_id)
+                .map(c => c.commune_name_latin);
+            
+            if (communes.length > 0) {
+                wilayaData[wilaya.wilaya_name_latin] = communes;
+            }
+        });
+        
+        wilayaNames = Object.keys(wilayaData);
+        console.log(`✅ ${wilayaNames.length} wilayas chargées`);
+        console.log(`✅ ${Object.values(wilayaData).reduce((a,b) => a + b.length, 0)} communes chargées`);
+        
+        // Remplir le select
+        populateWilayas();
+        
+    } catch (error) {
+        console.error('❌ Erreur chargement:', error);
+        alert('⚠️ Erreur de chargement des données. Veuillez réessayer.');
+    }
+}
 
         const wilayaNames = Object.keys(wilayaData);
 
