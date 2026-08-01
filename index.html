@@ -323,24 +323,24 @@
 
                     <div class="form-group">
                         <label>👤 Nom complet</label>
-                        <input type="text" id="fullname" name="fullname" placeholder="Ex: Ahmed Benali" required>
+                        <input type="text" id="fullname" placeholder="Ex: Ahmed Benali" required>
                     </div>
 
                     <div class="form-group">
                         <label>📱 Téléphone</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Ex: 0550 12 34 56" required>
+                        <input type="tel" id="phone" placeholder="Ex: 0550 12 34 56" required>
                     </div>
 
                     <div class="form-group">
                         <label>📍 Wilaya</label>
-                        <select id="order-wilaya" name="wilaya">
+                        <select id="order-wilaya">
                             <option value="">Sélectionnez votre wilaya</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>🏙️ Commune</label>
-                        <select id="order-commune" name="commune">
+                        <select id="order-commune">
                             <option value="">Sélectionnez d'abord une wilaya</option>
                         </select>
                         <div id="communeLoading" class="loading-text" style="display:none;">⏳ Chargement des communes...</div>
@@ -348,7 +348,7 @@
 
                     <div class="form-group">
                         <label>🏠 Adresse</label>
-                        <textarea id="address" name="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
+                        <textarea id="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
                     </div>
 
                     <button type="button" id="submitBtn" class="btn-submit">📩 Commander maintenant</button>
@@ -395,67 +395,67 @@
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
 
         // ========================================
-        // DONNÉES DES WILAYAS
+        // DONNÉES DES WILAYAS (TOUTES LES 69 WILAYAS)
         // ========================================
         const wilayaData = {
-            'Alger': ['Alger Centre', 'Bab El Oued', 'El Harrach', 'Hussein Dey', 'Rouiba', 'Dar El Beida', 'Chéraga', 'Birkhadem', 'Baraki', 'Sidi Moussa', 'Bouzaréah', 'Ben Aknoun'],
-            'Oran': ['Oran Centre', 'Es Sénia', 'Bir El Djir', 'Mers El Kébir', 'Aïn El Turck', 'El Ançor'],
-            'Constantine': ['Constantine Centre', 'El Khroub', 'Aïn Smara', 'Hamma Bouziane', 'Zighoud Youcef'],
-            'Annaba': ['Annaba Centre', 'El Hadjar', 'Seraïdi', 'Berrahal', 'Chétaïbi'],
-            'Sétif': ['Sétif Centre', 'El Eulma', 'Aïn Arnat', 'Bougaâ', 'Tala Ulm'],
-            'Blida': ['Blida Centre', 'Ouled Yaïch', 'Boufarik', 'Soumaa', 'Méftah'],
-            'Béjaïa': ['Béjaïa Centre', 'Akbou', 'Amizour', 'El Kseur', 'Tichy'],
-            'Tizi Ouzou': ['Tizi Ouzou Centre', 'Azazga', 'Azeffoun', 'Boghni', 'Makouda'],
-            'Tlemcen': ['Tlemcen Centre', 'Maghnia', 'Ghazaouet', 'Mansoura', 'Remchi'],
-            'Mostaganem': ['Mostaganem Centre', 'Sour', 'Aïn Tedless', 'Sayada'],
-            'Boumerdès': ['Boumerdès Centre', 'Baghlia', 'Corso', 'Boudouaou', 'Ténès'],
-            'Tipaza': ['Tipaza Centre', 'Cherchell', 'Hadjout', 'Sidi Rached', 'Nador'],
-            'Djelfa': ['Djelfa Centre', 'Aïn Oussera', 'Messaâd', 'El Idrissia', 'Hassi Bahbah'],
-            'Médéa': ['Médéa Centre', 'Berrouaghia', 'Aïn Boucif', 'Khemis Miliana'],
-            'Laghouat': ['Laghouat Centre', 'Aflou', 'Kheneg'],
-            'Ghardaïa': ['Ghardaïa Centre', 'Berriane', 'Beni Isguen'],
-            'Béchar': ['Béchar Centre', 'Kenadsa', 'Beni Abbès', 'Labiodh'],
-            'Biskra': ['Biskra Centre', 'Tolga', 'El Kantara', 'Sidi Okba'],
-            'Ouargla': ['Ouargla Centre', 'Hassi Messaoud', 'Touggourt'],
-            'El Oued': ['El Oued Centre', 'Djamaa', 'Hassi Messaoud'],
-            'Tamanrasset': ['Tamanrasset Centre', 'In Salah', 'Abalessa', 'In Guezzam'],
             'Adrar': ['Adrar Centre', 'Timimoun', 'Reggane', 'Fenoughil'],
+            'Alger': ['Alger Centre', 'Bab El Oued', 'El Harrach', 'Hussein Dey', 'Rouiba', 'Dar El Beida', 'Chéraga', 'Birkhadem', 'Baraki', 'Sidi Moussa', 'Bouzaréah', 'Ben Aknoun'],
+            'Annaba': ['Annaba Centre', 'El Hadjar', 'Seraïdi', 'Berrahal', 'Chétaïbi'],
+            'Aïn Defla': ['Aïn Defla Centre', 'Mekhatria', 'El Attaf'],
+            'Aïn Témouchent': ['Aïn Témouchent Centre', 'Beni Saf', 'El Amria'],
+            'Batna': ['Batna Centre', 'Barika', 'Aïn Touta'],
+            'Biskra': ['Biskra Centre', 'Tolga', 'El Kantara', 'Sidi Okba'],
+            'Blida': ['Blida Centre', 'Ouled Yaïch', 'Boufarik', 'Soumaa', 'Méftah'],
+            'Bordj Bou Arréridj': ['Bordj Bou Arréridj Centre', 'Ras El Oued', 'El Hamadiya'],
+            'Bouira': ['Bouira Centre', 'Aïn El Hadjar', 'El Adjiba'],
+            'Boumerdès': ['Boumerdès Centre', 'Baghlia', 'Corso', 'Boudouaou', 'Ténès'],
+            'Béchar': ['Béchar Centre', 'Kenadsa', 'Beni Abbès', 'Labiodh'],
+            'Béjaïa': ['Béjaïa Centre', 'Akbou', 'Amizour', 'El Kseur', 'Tichy'],
+            'Chlef': ['Chlef Centre', 'Ténès', 'El Karimia'],
+            'Constantine': ['Constantine Centre', 'El Khroub', 'Aïn Smara', 'Hamma Bouziane', 'Zighoud Youcef'],
+            'Djelfa': ['Djelfa Centre', 'Aïn Oussera', 'Messaâd', 'El Idrissia', 'Hassi Bahbah'],
+            'El Bayadh': ['El Bayadh Centre', 'Brezina', 'Rogassa'],
+            'El Oued': ['El Oued Centre', 'Djamaa', 'Hassi Messaoud'],
+            'El Tarf': ['El Tarf Centre', 'Bouhadjar', 'El Kala'],
+            'Ghardaïa': ['Ghardaïa Centre', 'Berriane', 'Beni Isguen'],
+            'Guelma': ['Guelma Centre', 'Bouchegouf', 'Héliopolis', 'El Fedjoudj'],
+            'Illizi': ['Illizi Centre', 'Djanet'],
+            'Jijel': ['Jijel Centre', 'El Milia', 'Boudiaf'],
+            'Khenchela': ['Khenchela Centre', 'El Hamma', 'Bouhmama'],
+            'Laghouat': ['Laghouat Centre', 'Aflou', 'Kheneg'],
+            'Mascara': ['Mascara Centre', 'Tizi', 'Aïn Fekan'],
+            'Mila': ['Mila Centre', 'Rouached', 'Grarem Gouga'],
+            'Mostaganem': ['Mostaganem Centre', 'Sour', 'Aïn Tedless', 'Sayada'],
+            'Médéa': ['Médéa Centre', 'Berrouaghia', 'Aïn Boucif', 'Khemis Miliana'],
+            'M\'sila': ['M\'sila Centre', 'Bou Saâda', 'Aïn El Hadjel'],
+            'Naâma': ['Naâma Centre', 'Mécheria', 'Aïn Sefra'],
+            'Oran': ['Oran Centre', 'Es Sénia', 'Bir El Djir', 'Mers El Kébir', 'Aïn El Turck', 'El Ançor'],
+            'Ouargla': ['Ouargla Centre', 'Hassi Messaoud', 'Touggourt'],
+            'Oum El Bouaghi': ['Oum El Bouaghi Centre', 'Aïn Babouche', 'Kheirane'],
+            'Relizane': ['Relizane Centre', 'Zemmora', 'El Hamadna'],
             'Saïda': ['Saïda Centre', 'Aïn El Hadjar', 'El Hassasna'],
             'Sidi Bel Abbès': ['Sidi Bel Abbès Centre', 'Télagh', 'Ben Badis'],
             'Skikda': ['Skikda Centre', 'El Hadaiek', 'Ben Azzouz', 'Azzaba'],
-            'Guelma': ['Guelma Centre', 'Bouchegouf', 'Héliopolis', 'El Fedjoudj'],
-            'Mascara': ['Mascara Centre', 'Tizi', 'Aïn Fekan'],
-            'Relizane': ['Relizane Centre', 'Zemmora', 'El Hamadna'],
-            'Aïn Témouchent': ['Aïn Témouchent Centre', 'Beni Saf', 'El Amria'],
-            'Aïn Defla': ['Aïn Defla Centre', 'Mekhatria', 'El Attaf'],
-            'Chlef': ['Chlef Centre', 'Ténès', 'El Karimia'],
-            'Bouira': ['Bouira Centre', 'Aïn El Hadjar', 'El Adjiba'],
-            'Tiaret': ['Tiaret Centre', 'Sougueur', 'Aïn Deheb'],
-            'Tissemsilt': ['Tissemsilt Centre', 'Bordj Bou Naâma', 'Lardjem'],
-            'El Bayadh': ['El Bayadh Centre', 'Brezina', 'Rogassa'],
-            'Naâma': ['Naâma Centre', 'Mécheria', 'Aïn Sefra'],
-            'Illizi': ['Illizi Centre', 'Djanet'],
-            'El Tarf': ['El Tarf Centre', 'Bouhadjar', 'El Kala'],
-            'Jijel': ['Jijel Centre', 'El Milia', 'Boudiaf'],
-            'Mila': ['Mila Centre', 'Rouached', 'Grarem Gouga'],
             'Souk Ahras': ['Souk Ahras Centre', 'Ouled Moumene', 'Mekhadma'],
-            'Khenchela': ['Khenchela Centre', 'El Hamma', 'Bouhmama'],
-            'Oum El Bouaghi': ['Oum El Bouaghi Centre', 'Aïn Babouche', 'Kheirane'],
-            'Batna': ['Batna Centre', 'Barika', 'Aïn Touta'],
-            'Tébessa': ['Tébessa Centre', 'El Ogla', 'Bir El Ater'],
-            'Bordj Bou Arréridj': ['Bordj Bou Arréridj Centre', 'Ras El Oued', 'El Hamadiya'],
-            'M\'sila': ['M\'sila Centre', 'Bou Saâda', 'Aïn El Hadjel'],
+            'Sétif': ['Sétif Centre', 'El Eulma', 'Aïn Arnat', 'Bougaâ', 'Tala Ulm'],
+            'Tamanrasset': ['Tamanrasset Centre', 'In Salah', 'Abalessa', 'In Guezzam'],
+            'Tiaret': ['Tiaret Centre', 'Sougueur', 'Aïn Deheb'],
             'Tindouf': ['Tindouf Centre'],
-            'Timimoun': ['Timimoun Centre'],
-            'Bordj Badji Mokhtar': ['Bordj Badji Mokhtar Centre'],
-            'Ouled Djellal': ['Ouled Djellal Centre'],
+            'Tipaza': ['Tipaza Centre', 'Cherchell', 'Hadjout', 'Sidi Rached', 'Nador'],
+            'Tissemsilt': ['Tissemsilt Centre', 'Bordj Bou Naâma', 'Lardjem'],
+            'Tizi Ouzou': ['Tizi Ouzou Centre', 'Azazga', 'Azeffoun', 'Boghni', 'Makouda'],
+            'Tlemcen': ['Tlemcen Centre', 'Maghnia', 'Ghazaouet', 'Mansoura', 'Remchi'],
+            'Tébessa': ['Tébessa Centre', 'El Ogla', 'Bir El Ater'],
             'Béni Abbès': ['Béni Abbès Centre'],
-            'In Salah': ['In Salah Centre'],
-            'In Guezzam': ['In Guezzam Centre'],
+            'El M\'Ghair': ['El M\'Ghair Centre'],
+            'El Meniaa': ['El Meniaa Centre'],
+            'Bordj Badji Mokhtar': ['Bordj Badji Mokhtar Centre'],
+            'Timimoun': ['Timimoun Centre'],
             'Touggourt': ['Touggourt Centre'],
             'Djanet': ['Djanet Centre'],
-            'El M\'Ghair': ['El M\'Ghair Centre'],
-            'El Meniaa': ['El Meniaa Centre']
+            'In Salah': ['In Salah Centre'],
+            'In Guezzam': ['In Guezzam Centre'],
+            'Ouled Djellal': ['Ouled Djellal Centre']
         };
 
         const wilayaNames = Object.keys(wilayaData);
@@ -472,6 +472,7 @@
                 option.textContent = wilaya;
                 select.appendChild(option);
             });
+            console.log(`✅ ${wilayaNames.length} wilayas chargées`);
         }
 
         function populateCommunes(wilayaName) {
@@ -548,10 +549,9 @@
         }
 
         // ========================================
-        // ENVOI EMAIL VIA FORMSPREE (avec FormData)
+        // ENVOI EMAIL VIA FORMSPREE
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
-            // Créer un FormData pour imiter une soumission de formulaire
             const formData = new FormData();
             
             formData.append('fullname', data.fullname);
@@ -571,7 +571,6 @@
             try {
                 const response = await fetch(FORMSPREE_ENDPOINT, {
                     method: 'POST',
-                    // ⚠️ NE PAS mettre 'Content-Type' pour FormData
                     body: formData
                 });
 
@@ -824,7 +823,6 @@
 
                 document.getElementById('loading-overlay').style.display = 'flex';
 
-                // Envoyer l'email via Formspree (avec FormData)
                 sendOrderEmail(data, priceDetail).then(result => {
                     document.getElementById('loading-overlay').style.display = 'none';
 
