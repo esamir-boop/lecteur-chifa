@@ -384,7 +384,7 @@
          SCRIPTS
     ======================================== -->
     <script>
-        function populateWilayas() {
+        // ========================================
         // CONFIGURATION
         // ========================================
         const UNIT_PRICE = 4990;
@@ -395,55 +395,51 @@
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
 
         // ========================================
-        // DONNÉES DES WILAYAS (TOUTES LES 69 WILAYAS)
+        // DONNÉES DES WILAYAS (chargées depuis cities.json)
         // ========================================
-       // ========================================
-// DONNÉES DES WILAYAS (chargées depuis cities.json)
-// ========================================
-let wilayaData = {};
-let wilayaNames = [];
+        let wilayaData = {};
+        let wilayaNames = [];
 
-// ========================================
-// CHARGER LES DONNÉES DEPUIS cities.json
-// ========================================
-async function loadWilayasData() {
-    try {
-        console.log('📡 Chargement des données depuis cities.json...');
-        
-        const response = await fetch('cities.json');
-        if (!response.ok) {
-            throw new Error('Fichier cities.json non trouvé');
-        }
-        
-        const data = await response.json();
-        console.log(`📥 ${data.total_wilayas} wilayas, ${data.total_communes} communes`);
-        
-        // Organiser les données
-        wilayaData = {};
-        data.wilayas.forEach(wilaya => {
-            const communes = data.communes
-                .filter(c => c.wilaya_id === wilaya.wilaya_id)
-                .map(c => c.commune_name_latin);
-            
-            if (communes.length > 0) {
-                wilayaData[wilaya.wilaya_name_latin] = communes;
+        // ========================================
+        // CHARGER LES DONNÉES DEPUIS cities.json
+        // ========================================
+        async function loadWilayasData() {
+            try {
+                console.log('📡 Chargement des données depuis cities.json...');
+                
+                const response = await fetch('cities.json');
+                if (!response.ok) {
+                    throw new Error('Fichier cities.json non trouvé');
+                }
+                
+                const data = await response.json();
+                console.log(`📥 ${data.total_wilayas} wilayas, ${data.total_communes} communes`);
+                
+                // Organiser les données
+                wilayaData = {};
+                data.wilayas.forEach(wilaya => {
+                    const communes = data.communes
+                        .filter(c => c.wilaya_id === wilaya.wilaya_id)
+                        .map(c => c.commune_name_latin);
+                    
+                    if (communes.length > 0) {
+                        wilayaData[wilaya.wilaya_name_latin] = communes;
+                    }
+                });
+                
+                // ⚠️ ICI : SUPPRIMEZ "const"
+                wilayaNames = Object.keys(wilayaData);
+                console.log(`✅ ${wilayaNames.length} wilayas chargées`);
+                console.log(`✅ ${Object.values(wilayaData).reduce((a,b) => a + b.length, 0)} communes chargées`);
+                
+                // Remplir le select
+                populateWilayas();
+                
+            } catch (error) {
+                console.error('❌ Erreur chargement:', error);
+                alert('⚠️ Erreur de chargement des données. Veuillez réessayer.');
             }
-        });
-        
-        wilayaNames = Object.keys(wilayaData);
-        console.log(`✅ ${wilayaNames.length} wilayas chargées`);
-        console.log(`✅ ${Object.values(wilayaData).reduce((a,b) => a + b.length, 0)} communes chargées`);
-        
-        // Remplir le select
-        populateWilayas();
-        
-    } catch (error) {
-        console.error('❌ Erreur chargement:', error);
-        alert('⚠️ Erreur de chargement des données. Veuillez réessayer.');
-    }
-}
-
-        const wilayaNames = Object.keys(wilayaData);
+        }
 
         // ========================================
         // FONCTIONS
@@ -451,13 +447,17 @@ async function loadWilayasData() {
         function populateWilayas() {
             const select = document.getElementById('order-wilaya');
             select.innerHTML = '<option value="">Sélectionnez votre wilaya</option>';
-            wilayaNames.sort().forEach(wilaya => {
+            
+            const sorted = [...wilayaNames].sort((a, b) => a.localeCompare(b));
+            
+            sorted.forEach(wilaya => {
                 const option = document.createElement('option');
                 option.value = wilaya;
                 option.textContent = wilaya;
                 select.appendChild(option);
             });
-            console.log(`✅ ${wilayaNames.length} wilayas chargées`);
+            
+            console.log(`📋 ${sorted.length} wilayas affichées`);
         }
 
         function populateCommunes(wilayaName) {
@@ -752,7 +752,8 @@ async function loadWilayasData() {
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initialisation...');
 
-            populateWilayas();
+            // Charger les données depuis cities.json
+            loadWilayasData();
 
             document.getElementById('order-wilaya').addEventListener('change', function() {
                 populateCommunes(this.value);
