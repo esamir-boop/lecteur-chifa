@@ -1,18 +1,1 @@
-# ⚠️ Fichier avec la clé API (NE PAS METTRE SUR GITHUB)
-config.js
 
-# Fichiers de log
-*.log
-
-# Fichiers système
-.DS_Store
-Thumbs.db
-
-# Dossier de dépendances
-node_modules/
-
-# Fichiers temporaires
-*.tmp
-*.temp
-*.swp
-*.swo
