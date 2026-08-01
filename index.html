@@ -385,35 +385,14 @@
     ======================================== -->
     <script>
         // ========================================
-        // CONFIGURATION PAR DÉFAUT (sans clé API)
+        // CONFIGURATION
         // ========================================
-        
-    apiKey: '',  // ⚠️ Remplacez par votre nouvelle clé
-    senderEmail: 'berchichesamir@gmail.com',
-    senderName: 'Lecteur CHIFA',
-    toEmail: 'berchichesamir@gmail.com'
-
         const UNIT_PRICE = 4990;
         const DISCOUNT_PER_EXTRA = 200;
         const MAX_QUANTITY = 4;
 
-        // ========================================
-        // CHARGER LA CONFIGURATION DEPUIS config.js
-        // ========================================
-        async function loadBrevoConfig() {
-            try {
-                const response = await fetch('config.js');
-                if (response.ok) {
-                    const script = await response.text();
-                    eval(script);
-                    console.log('✅ Configuration Brevo chargée depuis config.js');
-                } else {
-                    console.warn('⚠️ Fichier config.js non trouvé, utilisation des valeurs par défaut');
-                }
-            } catch (error) {
-                console.warn('⚠️ Erreur chargement config.js:', error.message);
-            }
-        }
+        // ⚠️ Remplacer par votre endpoint Formspree
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
 
         // ========================================
         // DONNÉES DES WILAYAS
@@ -569,47 +548,10 @@
         }
 
         // ========================================
-        // ENVOI EMAIL VIA BREVO (SANS CLÉ VISIBLE)
+        // ENVOI EMAIL VIA FORMSPREE (SANS CLÉ API)
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
-            // Vérifier que la clé est chargée
-            if (!BREVO_CONFIG.apiKey) {
-                console.error('❌ Clé API Brevo manquante');
-                return { success: false, error: 'Clé API manquante. Vérifiez config.js' };
-            }
-
-            const url = 'https://api.brevo.com/v3/smtp/email';
-
-            const htmlContent = `
-                <html>
-                    <head><meta charset="UTF-8"></head>
-                    <body style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto;">
-                        <h2 style="color: #1A4C27;">📝 Nouvelle commande - Lecteur CHIFA</h2>
-                        <hr style="border: 1px solid #e0e0e0;">
-                        <h3 style="color: #1A4C27;">👤 Client</h3>
-                        <p><strong>Nom :</strong> ${data.fullname}</p>
-                        <p><strong>Téléphone :</strong> ${data.phone}</p>
-                        <p><strong>Wilaya :</strong> ${data.wilaya}</p>
-                        <p><strong>Commune :</strong> ${data.commune}</p>
-                        <p><strong>Adresse :</strong> ${data.address}</p>
-                        <hr style="border: 1px solid #e0e0e0;">
-                        <h3 style="color: #1A4C27;">📦 Détail de la commande</h3>
-                        <p><strong>Produit :</strong> Lecteur CHIFA Zoweetek</p>
-                        <p><strong>Quantité :</strong> ${data.quantity}</p>
-                        <p><strong>Sous-total :</strong> ${priceDetail.subtotal.toLocaleString()} DA</p>
-                        ${priceDetail.discount > 0 ? `<p><strong>Remise :</strong> -${priceDetail.discount.toLocaleString()} DA</p>` : ''}
-                        <p><strong>🚚 Livraison :</strong> ${priceDetail.fee.toLocaleString()} DA</p>
-                        <hr style="border: 1px solid #1A4C27;">
-                        <p style="font-size: 1.3rem; font-weight: 700; color: #F47920;">
-                            <strong>💰 Total :</strong> ${priceDetail.total.toLocaleString()} DA
-                        </p>
-                        <hr style="border: 1px solid #e0e0e0;">
-                        <p style="color: #999; font-size: 0.85rem;">📅 ${new Date().toLocaleString('fr-DZ')}</p>
-                    </body>
-                </html>
-            `;
-
-            const textContent = `
+            const message = `
                 📝 NOUVELLE COMMANDE - Lecteur CHIFA
 
                 👤 Client
@@ -630,44 +572,30 @@
                 📅 ${new Date().toLocaleString('fr-DZ')}
             `;
 
-            const payload = {
-                sender: {
-                    name: BREVO_CONFIG.senderName,
-                    email: BREVO_CONFIG.senderEmail
-                },
-                to: [
-                    {
-                        email: BREVO_CONFIG.toEmail,
-                        name: 'Samir'
-                    }
-                ],
-                subject: `📝 Nouvelle commande - ${data.fullname}`,
-                htmlContent: htmlContent,
-                textContent: textContent
-            };
-
             try {
-                const response = await fetch(url, {
+                const response = await fetch(FORMSPREE_ENDPOINT, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'api-key': BREVO_CONFIG.apiKey
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        _subject: `📝 Nouvelle commande - ${data.fullname}`,
+                        message: message,
+                        _replyto: data.email || data.phone,
+                        _cc: 'berchichesamir@gmail.com'
+                    })
                 });
 
-                if (!response.ok) {
+                if (response.ok) {
+                    console.log('✅ Email envoyé avec succès !');
+                    return { success: true };
+                } else {
                     const error = await response.json();
-                    console.error('❌ Erreur Brevo:', error);
-                    throw new Error(error.message || 'Erreur envoi email');
+                    console.error('❌ Erreur Formspree:', error);
+                    throw new Error('Erreur envoi email');
                 }
-
-                const result = await response.json();
-                console.log('✅ Email envoyé avec succès !', result);
-                return { success: true, messageId: result.messageId };
-
             } catch (error) {
-                console.error('❌ Erreur envoi email:', error);
+                console.error('❌ Erreur:', error);
                 return { success: false, error: error.message };
             }
         }
@@ -848,11 +776,8 @@
         // ========================================
         // INITIALISATION
         // ========================================
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initialisation...');
-
-            // Charger la configuration Brevo
-            await loadBrevoConfig();
 
             populateWilayas();
 
@@ -910,7 +835,7 @@
 
                 document.getElementById('loading-overlay').style.display = 'flex';
 
-                // Envoyer l'email via Brevo
+                // Envoyer l'email via Formspree
                 sendOrderEmail(data, priceDetail).then(result => {
                     document.getElementById('loading-overlay').style.display = 'none';
 
