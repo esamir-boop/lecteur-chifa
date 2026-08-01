@@ -1,1 +1,914 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur CHIFA Zoweetek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; color: #1a1a2e; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+        .navbar {
+            background: #1A4C27;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #1A4C27 0%, #2A6B3A 50%, #1A4C27 100%);
+            background-size: 200% 200%;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; box-shadow: 0 4px 30px rgba(26,76,39,0.3); }
+            50% { background-position: 100% 50%; box-shadow: 0 4px 50px rgba(26,76,39,0.6); }
+            100% { background-position: 0% 50%; box-shadow: 0 4px 30px rgba(26,76,39,0.3); }
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; position: relative; }
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -15px; left: -15px; right: -15px; bottom: -15px;
+            background: radial-gradient(circle at center, rgba(255,215,0,0.15), transparent 70%);
+            border-radius: 50%;
+            animation: glow-pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes glow-pulse {
+            0%,100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+        .logo-icon {
+            width: 48px; height: 48px;
+            background: #F5D742;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #1A4C27;
+            font-size: 1.8rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(245,215,66,0.3);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        .logo-icon:hover { transform: scale(1.05) rotate(-5deg); }
+        .logo-text .main { font-weight: 700; font-size: 1.3rem; color: #FFFFFF; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); position: relative; z-index: 1; }
+        .logo-text .sub { font-weight: 300; font-size: 0.7rem; color: #F5D742; text-transform: uppercase; letter-spacing: 2px; position: relative; z-index: 1; }
+
+        .order-section { padding: 60px 0; background: #f0f2f5; min-height: 100vh; }
+        .order-header { text-align: center; margin-bottom: 40px; }
+        .order-header h2 { font-size: 2.2rem; color: #1A4C27; }
+        .order-header p { color: #6c757d; font-size: 1.1rem; }
+        .order-wrapper { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; max-width: 1100px; margin: 0 auto; align-items: start; }
+        .order-product { background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); text-align: center; position: sticky; top: 100px; }
+        .order-product img { max-width: 100%; border-radius: 12px; }
+        .order-product h3 { color: #1A4C27; font-size: 1.2rem; margin-top: 10px; }
+        .order-product .product-price { font-size: 1.8rem; font-weight: 700; color: #F47920; }
+        .order-product .product-desc { color: #6c757d; font-size: 0.9rem; margin-top: 5px; }
+        .order-form { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .order-form .form-group { margin-bottom: 20px; }
+        .order-form label { display: block; font-weight: 600; color: #1A4C27; margin-bottom: 6px; font-size: 0.95rem; }
+        .order-form input, .order-form select, .order-form textarea {
+            width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px;
+            font-size: 1rem; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; background: white;
+        }
+        .order-form input:focus, .order-form select:focus, .order-form textarea:focus {
+            border-color: #1A4C27; outline: none; box-shadow: 0 0 0 3px rgba(26,76,39,0.15);
+        }
+        .order-form textarea { resize: vertical; min-height: 80px; }
+
+        .quantity-selector { display: flex; align-items: center; gap: 10px; max-width: 150px; }
+        .quantity-selector input { width: 60px; text-align: center; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-weight: 600; }
+        .quantity-selector .qty-btn { width: 40px; height: 40px; border: none; border-radius: 8px; background: #f0f0f0; font-size: 1.3rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .quantity-selector .qty-btn:hover { background: #1A4C27; color: white; }
+
+        .price-detail { background: #f8f9fa; border-radius: 12px; padding: 18px 20px; border: 2px solid #e9ecef; }
+        .price-detail .price-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.95rem; color: #4a4a5a; }
+        .price-detail .price-line .label { font-weight: 500; }
+        .price-detail .price-line .value { font-weight: 600; }
+        .price-detail .price-line.subtotal { border-bottom: 1px dashed #dee2e6; padding-bottom: 10px; }
+        .price-detail .price-line.discount { color: #e74c3c; }
+        .price-detail .price-line.discount .value { color: #e74c3c; }
+        .price-detail .price-line.delivery { border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
+        .price-detail .price-line.total { font-size: 1.3rem; font-weight: 700; color: #1A4C27; padding-top: 8px; }
+        .price-detail .price-line.total .value { color: #F47920; font-size: 1.5rem; }
+
+        .btn-submit { width: 100%; padding: 16px; background: #1A4C27; color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; margin-top: 10px; }
+        .btn-submit:hover { background: #2A6B3A; transform: translateY(-2px); box-shadow: 0 6px 25px rgba(26,76,39,0.3); }
+        .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .form-footer { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #6c757d; }
+
+        .status-msg { padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.9rem; }
+        .status-msg.error { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status-msg.success { display: block; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-msg.warning { display: block; background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .loading-text { color: #6c757d; font-size: 0.85rem; margin-top: 5px; }
+
+        @media (max-width: 968px) { .order-wrapper { grid-template-columns: 1fr; } .order-product { position: static; max-width: 400px; margin: 0 auto; } }
+        @media (max-width: 768px) { .order-form { padding: 20px; } }
+        @media (max-width: 600px) { .logo-icon { width: 40px; height: 40px; font-size: 1.3rem; } .logo-text .main { font-size: 1rem; } .logo-text .sub { font-size: 0.6rem; } .order-header h2 { font-size: 1.6rem; } }
+
+        /* ===== CÉLÉBRATION ===== */
+        #celebration-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeInOverlay 0.5s ease;
+        }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        #celebration-content {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            position: relative;
+            z-index: 10000;
+            max-width: 600px;
+        }
+        #celebration-content .emoji-big {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 10px;
+            animation: bounceEmoji 1s ease infinite;
+        }
+        @keyframes bounceEmoji {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        #celebration-content h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #F5D742;
+            text-shadow: 0 0 30px rgba(245,215,66,0.5);
+            margin-bottom: 10px;
+        }
+        #celebration-content .subtitle {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+        #celebration-content .order-summary {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #celebration-content .order-summary .line {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        #celebration-content .order-summary .line:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: #F5D742;
+            font-size: 1.1rem;
+            padding-top: 8px;
+            margin-top: 5px;
+            border-top: 1px solid rgba(255,215,66,0.2);
+        }
+        #celebration-content .btn-close-celebration {
+            margin-top: 20px;
+            padding: 14px 45px;
+            background: #F5D742;
+            color: #1A4C27;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 20px rgba(245,215,66,0.3);
+        }
+        #celebration-content .btn-close-celebration:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(245,215,66,0.5);
+        }
+
+        #fireworks-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall linear forwards;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9997;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #loading-overlay .spinner {
+            width: 60px; height: 60px;
+            border: 5px solid rgba(255,255,255,0.2);
+            border-top-color: #F5D742;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #loading-overlay p {
+            color: white;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">📇</div>
+                <div class="logo-text">
+                    <span class="main">Lecteur CHIFA</span>
+                    <span class="sub">Zoweetek</span>
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===== SECTION COMMANDE ===== -->
+    <section class="order-section" id="commande">
+        <div class="container">
+            <div class="order-header">
+                <h2>📝 Passer votre commande</h2>
+                <p>Remplissez le formulaire ci-dessous pour commander votre lecteur CHIFA</p>
+            </div>
+
+            <div class="order-wrapper">
+                <div class="order-product">
+                    <img src="assets/lecteur.jpg" alt="Lecteur CHIFA Zoweetek">
+                    <h3>Lecteur CHIFA Zoweetek</h3>
+                    <p class="product-price">4 990 DA</p>
+                    <p class="product-desc">Lecteur de carte à puce USB compatible CHIFA</p>
+                </div>
+
+                <form id="order-form" class="order-form">
+                    <div id="statusMessage" class="status-msg"></div>
+
+                    <div class="form-group">
+                        <label>📦 Quantité</label>
+                        <div class="quantity-selector">
+                            <button type="button" class="qty-btn minus">−</button>
+                            <input type="number" id="quantity" value="1" min="1" max="4">
+                            <button type="button" class="qty-btn plus">+</button>
+                        </div>
+                        <small style="color:#6c757d;font-size:0.8rem;">Réduction de 200 DA par quantité supplémentaire (max 4)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>💰 Détail du prix</label>
+                        <div class="price-detail">
+                            <div class="price-line subtotal">
+                                <span class="label">Sous-total</span>
+                                <span class="value" id="subtotal-display">4 990 DA</span>
+                            </div>
+                            <div class="price-line discount" id="discount-line" style="display:none;">
+                                <span class="label">Remise</span>
+                                <span class="value" id="discount-display">-0 DA</span>
+                            </div>
+                            <div class="price-line delivery">
+                                <span class="label">🚚 Livraison</span>
+                                <span class="value" id="delivery-display">À déterminer</span>
+                            </div>
+                            <div class="price-line total">
+                                <span class="label">Total</span>
+                                <span class="value" id="total-display">4 990 DA</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>👤 Nom complet</label>
+                        <input type="text" id="fullname" placeholder="Ex: Ahmed Benali" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📱 Téléphone</label>
+                        <input type="tel" id="phone" placeholder="Ex: 0550 12 34 56" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📍 Wilaya</label>
+                        <select id="order-wilaya">
+                            <option value="">Sélectionnez votre wilaya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🏙️ Commune</label>
+                        <select id="order-commune">
+                            <option value="">Sélectionnez d'abord une wilaya</option>
+                        </select>
+                        <div id="communeLoading" class="loading-text" style="display:none;">⏳ Chargement des communes...</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🏠 Adresse</label>
+                        <textarea id="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
+                    </div>
+
+                    <button type="button" id="submitBtn" class="btn-submit">📩 Commander maintenant</button>
+                    <p class="form-footer">🔒 Vos informations sont sécurisées</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LOADING ===== -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p>⏳ Envoi de votre commande...</p>
+    </div>
+
+    <!-- ===== CÉLÉBRATION ===== -->
+    <div id="celebration-overlay">
+        <div id="celebration-content">
+            <span class="emoji-big">🎉</span>
+            <h1>Félicitations ! 🎊</h1>
+            <p class="subtitle">Votre commande a été validée avec succès !</p>
+            <p style="font-size:0.9rem; color:#88d8b0;">📧 Un email de confirmation vous a été envoyé</p>
+            <div class="order-summary" id="order-summary"></div>
+            <button class="btn-close-celebration" onclick="closeCelebration()">✅ J'ai compris</button>
+        </div>
+    </div>
+
+    <!-- ===== FEUX D'ARTIFICE ===== -->
+    <canvas id="fireworks-canvas"></canvas>
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <!-- ========================================
+         SCRIPTS
+    ======================================== -->
+    <script>
+        // ========================================
+        // CONFIGURATION BREVO (🔐 SÉCURISÉ)
+        // ========================================
+        // ⚠️ Remplacez par votre nouvelle clé API Brevo
+        const BREVO_CONFIG = {
+            apiKey: 'VOTRE_NOUVELLE_CLE_API_ICI',  // À remplacer
+            senderEmail: 'berchichesamir@gmail.com',
+            senderName: 'Lecteur CHIFA',
+            toEmail: 'berchichesamir@gmail.com'
+        };
+
+        const UNIT_PRICE = 4990;
+        const DISCOUNT_PER_EXTRA = 200;
+        const MAX_QUANTITY = 4;
+
+        // ========================================
+        // DONNÉES DES WILAYAS
+        // ========================================
+        const wilayaData = {
+            'Alger': ['Alger Centre', 'Bab El Oued', 'El Harrach', 'Hussein Dey', 'Rouiba', 'Dar El Beida', 'Chéraga', 'Birkhadem', 'Baraki', 'Sidi Moussa', 'Bouzaréah', 'Ben Aknoun'],
+            'Oran': ['Oran Centre', 'Es Sénia', 'Bir El Djir', 'Mers El Kébir', 'Aïn El Turck', 'El Ançor'],
+            'Constantine': ['Constantine Centre', 'El Khroub', 'Aïn Smara', 'Hamma Bouziane', 'Zighoud Youcef'],
+            'Annaba': ['Annaba Centre', 'El Hadjar', 'Seraïdi', 'Berrahal', 'Chétaïbi'],
+            'Sétif': ['Sétif Centre', 'El Eulma', 'Aïn Arnat', 'Bougaâ', 'Tala Ulm'],
+            'Blida': ['Blida Centre', 'Ouled Yaïch', 'Boufarik', 'Soumaa', 'Méftah'],
+            'Béjaïa': ['Béjaïa Centre', 'Akbou', 'Amizour', 'El Kseur', 'Tichy'],
+            'Tizi Ouzou': ['Tizi Ouzou Centre', 'Azazga', 'Azeffoun', 'Boghni', 'Makouda'],
+            'Tlemcen': ['Tlemcen Centre', 'Maghnia', 'Ghazaouet', 'Mansoura', 'Remchi'],
+            'Mostaganem': ['Mostaganem Centre', 'Sour', 'Aïn Tedless', 'Sayada'],
+            'Boumerdès': ['Boumerdès Centre', 'Baghlia', 'Corso', 'Boudouaou', 'Ténès'],
+            'Tipaza': ['Tipaza Centre', 'Cherchell', 'Hadjout', 'Sidi Rached', 'Nador'],
+            'Djelfa': ['Djelfa Centre', 'Aïn Oussera', 'Messaâd', 'El Idrissia', 'Hassi Bahbah'],
+            'Médéa': ['Médéa Centre', 'Berrouaghia', 'Aïn Boucif', 'Khemis Miliana'],
+            'Laghouat': ['Laghouat Centre', 'Aflou', 'Kheneg'],
+            'Ghardaïa': ['Ghardaïa Centre', 'Berriane', 'Beni Isguen'],
+            'Béchar': ['Béchar Centre', 'Kenadsa', 'Beni Abbès', 'Labiodh'],
+            'Biskra': ['Biskra Centre', 'Tolga', 'El Kantara', 'Sidi Okba'],
+            'Ouargla': ['Ouargla Centre', 'Hassi Messaoud', 'Touggourt'],
+            'El Oued': ['El Oued Centre', 'Djamaa', 'Hassi Messaoud'],
+            'Tamanrasset': ['Tamanrasset Centre', 'In Salah', 'Abalessa', 'In Guezzam'],
+            'Adrar': ['Adrar Centre', 'Timimoun', 'Reggane', 'Fenoughil'],
+            'Saïda': ['Saïda Centre', 'Aïn El Hadjar', 'El Hassasna'],
+            'Sidi Bel Abbès': ['Sidi Bel Abbès Centre', 'Télagh', 'Ben Badis'],
+            'Skikda': ['Skikda Centre', 'El Hadaiek', 'Ben Azzouz', 'Azzaba'],
+            'Guelma': ['Guelma Centre', 'Bouchegouf', 'Héliopolis', 'El Fedjoudj'],
+            'Mascara': ['Mascara Centre', 'Tizi', 'Aïn Fekan'],
+            'Relizane': ['Relizane Centre', 'Zemmora', 'El Hamadna'],
+            'Aïn Témouchent': ['Aïn Témouchent Centre', 'Beni Saf', 'El Amria'],
+            'Aïn Defla': ['Aïn Defla Centre', 'Mekhatria', 'El Attaf'],
+            'Chlef': ['Chlef Centre', 'Ténès', 'El Karimia'],
+            'Bouira': ['Bouira Centre', 'Aïn El Hadjar', 'El Adjiba'],
+            'Tiaret': ['Tiaret Centre', 'Sougueur', 'Aïn Deheb'],
+            'Tissemsilt': ['Tissemsilt Centre', 'Bordj Bou Naâma', 'Lardjem'],
+            'El Bayadh': ['El Bayadh Centre', 'Brezina', 'Rogassa'],
+            'Naâma': ['Naâma Centre', 'Mécheria', 'Aïn Sefra'],
+            'Illizi': ['Illizi Centre', 'Djanet'],
+            'El Tarf': ['El Tarf Centre', 'Bouhadjar', 'El Kala'],
+            'Jijel': ['Jijel Centre', 'El Milia', 'Boudiaf'],
+            'Mila': ['Mila Centre', 'Rouached', 'Grarem Gouga'],
+            'Souk Ahras': ['Souk Ahras Centre', 'Ouled Moumene', 'Mekhadma'],
+            'Khenchela': ['Khenchela Centre', 'El Hamma', 'Bouhmama'],
+            'Oum El Bouaghi': ['Oum El Bouaghi Centre', 'Aïn Babouche', 'Kheirane'],
+            'Batna': ['Batna Centre', 'Barika', 'Aïn Touta'],
+            'Tébessa': ['Tébessa Centre', 'El Ogla', 'Bir El Ater'],
+            'Bordj Bou Arréridj': ['Bordj Bou Arréridj Centre', 'Ras El Oued', 'El Hamadiya'],
+            'M\'sila': ['M\'sila Centre', 'Bou Saâda', 'Aïn El Hadjel'],
+            'Tindouf': ['Tindouf Centre'],
+            'Timimoun': ['Timimoun Centre'],
+            'Bordj Badji Mokhtar': ['Bordj Badji Mokhtar Centre'],
+            'Ouled Djellal': ['Ouled Djellal Centre'],
+            'Béni Abbès': ['Béni Abbès Centre'],
+            'In Salah': ['In Salah Centre'],
+            'In Guezzam': ['In Guezzam Centre'],
+            'Touggourt': ['Touggourt Centre'],
+            'Djanet': ['Djanet Centre'],
+            'El M\'Ghair': ['El M\'Ghair Centre'],
+            'El Meniaa': ['El Meniaa Centre']
+        };
+
+        const wilayaNames = Object.keys(wilayaData);
+
+        // ========================================
+        // FONCTIONS
+        // ========================================
+        function populateWilayas() {
+            const select = document.getElementById('order-wilaya');
+            select.innerHTML = '<option value="">Sélectionnez votre wilaya</option>';
+            wilayaNames.sort().forEach(wilaya => {
+                const option = document.createElement('option');
+                option.value = wilaya;
+                option.textContent = wilaya;
+                select.appendChild(option);
+            });
+        }
+
+        function populateCommunes(wilayaName) {
+            const select = document.getElementById('order-commune');
+            const loading = document.getElementById('communeLoading');
+            const statusMsg = document.getElementById('statusMessage');
+
+            select.innerHTML = '<option value="">Chargement...</option>';
+            select.disabled = true;
+            loading.style.display = 'block';
+            statusMsg.className = 'status-msg';
+
+            if (!wilayaName) {
+                select.innerHTML = '<option value="">Sélectionnez d\'abord une wilaya</option>';
+                select.disabled = false;
+                loading.style.display = 'none';
+                return;
+            }
+
+            setTimeout(() => {
+                const communes = wilayaData[wilayaName] || ['Centre'];
+                select.innerHTML = '<option value="">Sélectionnez une commune</option>';
+                communes.sort().forEach(commune => {
+                    const option = document.createElement('option');
+                    option.value = commune;
+                    option.textContent = commune;
+                    select.appendChild(option);
+                });
+                select.disabled = false;
+                loading.style.display = 'none';
+
+                if (communes.length > 0) {
+                    statusMsg.className = 'status-msg success';
+                    statusMsg.textContent = `✅ ${communes.length} commune(s) disponible(s) pour ${wilayaName}`;
+                    setTimeout(() => { statusMsg.className = 'status-msg'; }, 3000);
+                }
+            }, 300);
+        }
+
+        function getDeliveryFee(wilayaName) {
+            if (!wilayaName) return 0;
+            const zone1 = ['Alger', 'Oran', 'Constantine', 'Annaba', 'Sétif', 'Blida', 'Béjaïa', 'Tizi Ouzou', 'Boumerdès', 'Tipaza'];
+            const zone2 = ['Tlemcen', 'Mostaganem', 'Saïda', 'Sidi Bel Abbès', 'Tiaret', 'Médéa', 'Djelfa', 'Laghouat', 'Ghardaïa', 'Béchar'];
+            if (zone1.includes(wilayaName)) return 500;
+            if (zone2.includes(wilayaName)) return 700;
+            return 900;
+        }
+
+        function calculatePrice() {
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const wilaya = document.getElementById('order-wilaya').value;
+            const fee = getDeliveryFee(wilaya);
+
+            const subtotal = UNIT_PRICE * quantity;
+            const discount = (quantity - 1) * DISCOUNT_PER_EXTRA;
+            const discountedPrice = subtotal - discount;
+            const total = discountedPrice + fee;
+
+            document.getElementById('subtotal-display').textContent = `${subtotal.toLocaleString()} DA`;
+
+            const discountLine = document.getElementById('discount-line');
+            const discountDisplay = document.getElementById('discount-display');
+            if (discount > 0) {
+                discountLine.style.display = 'flex';
+                discountDisplay.textContent = `- ${discount.toLocaleString()} DA`;
+            } else {
+                discountLine.style.display = 'none';
+            }
+
+            document.getElementById('delivery-display').textContent = fee ? `${fee.toLocaleString()} DA` : 'À déterminer';
+            document.getElementById('total-display').textContent = `${total.toLocaleString()} DA`;
+
+            return { subtotal, discount, discountedPrice, fee, total };
+        }
+
+        // ========================================
+        // ENVOI EMAIL VIA BREVO
+        // ========================================
+        async function sendOrderEmail(data, priceDetail) {
+            const url = 'https://api.brevo.com/v3/smtp/email';
+
+            const htmlContent = `
+                <html>
+                    <head><meta charset="UTF-8"></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto;">
+                        <h2 style="color: #1A4C27;">📝 Nouvelle commande - Lecteur CHIFA</h2>
+                        <hr style="border: 1px solid #e0e0e0;">
+                        <h3 style="color: #1A4C27;">👤 Client</h3>
+                        <p><strong>Nom :</strong> ${data.fullname}</p>
+                        <p><strong>Téléphone :</strong> ${data.phone}</p>
+                        <p><strong>Wilaya :</strong> ${data.wilaya}</p>
+                        <p><strong>Commune :</strong> ${data.commune}</p>
+                        <p><strong>Adresse :</strong> ${data.address}</p>
+                        <hr style="border: 1px solid #e0e0e0;">
+                        <h3 style="color: #1A4C27;">📦 Détail de la commande</h3>
+                        <p><strong>Produit :</strong> Lecteur CHIFA Zoweetek</p>
+                        <p><strong>Quantité :</strong> ${data.quantity}</p>
+                        <p><strong>Sous-total :</strong> ${priceDetail.subtotal.toLocaleString()} DA</p>
+                        ${priceDetail.discount > 0 ? `<p><strong>Remise :</strong> -${priceDetail.discount.toLocaleString()} DA</p>` : ''}
+                        <p><strong>🚚 Livraison :</strong> ${priceDetail.fee.toLocaleString()} DA</p>
+                        <hr style="border: 1px solid #1A4C27;">
+                        <p style="font-size: 1.3rem; font-weight: 700; color: #F47920;">
+                            <strong>💰 Total :</strong> ${priceDetail.total.toLocaleString()} DA
+                        </p>
+                        <hr style="border: 1px solid #e0e0e0;">
+                        <p style="color: #999; font-size: 0.85rem;">📅 ${new Date().toLocaleString('fr-DZ')}</p>
+                    </body>
+                </html>
+            `;
+
+            const textContent = `
+                📝 NOUVELLE COMMANDE - Lecteur CHIFA
+
+                👤 Client
+                Nom: ${data.fullname}
+                Téléphone: ${data.phone}
+                Wilaya: ${data.wilaya}
+                Commune: ${data.commune}
+                Adresse: ${data.address}
+
+                📦 Détail de la commande
+                Produit: Lecteur CHIFA Zoweetek
+                Quantité: ${data.quantity}
+                Sous-total: ${priceDetail.subtotal.toLocaleString()} DA
+                ${priceDetail.discount > 0 ? `Remise: -${priceDetail.discount.toLocaleString()} DA` : ''}
+                Livraison: ${priceDetail.fee.toLocaleString()} DA
+                Total: ${priceDetail.total.toLocaleString()} DA
+
+                📅 ${new Date().toLocaleString('fr-DZ')}
+            `;
+
+            const payload = {
+                sender: {
+                    name: BREVO_CONFIG.senderName,
+                    email: BREVO_CONFIG.senderEmail
+                },
+                to: [
+                    {
+                        email: BREVO_CONFIG.toEmail,
+                        name: 'Samir'
+                    }
+                ],
+                subject: `📝 Nouvelle commande - ${data.fullname}`,
+                htmlContent: htmlContent,
+                textContent: textContent
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': BREVO_CONFIG.apiKey
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    console.error('❌ Erreur Brevo:', error);
+                    throw new Error(error.message || 'Erreur envoi email');
+                }
+
+                const result = await response.json();
+                console.log('✅ Email envoyé avec succès !', result);
+                return { success: true, messageId: result.messageId };
+
+            } catch (error) {
+                console.error('❌ Erreur envoi email:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // ========================================
+        // FEUX D'ARTIFICE
+        // ========================================
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+        let fireworks = [];
+        let particles = [];
+        let animationId = null;
+        let isFireworksRunning = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * canvas.height * 0.4 + 50;
+                this.speed = 4 + Math.random() * 4;
+                this.exploded = false;
+                this.trail = [];
+                this.life = 1;
+            }
+
+            update() {
+                if (this.exploded) { this.life -= 0.01; return; }
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > 10) this.trail.shift();
+                this.y -= this.speed;
+                this.x += (Math.random() - 0.5) * 0.5;
+                if (this.y <= this.targetY) this.explode();
+            }
+
+            explode() {
+                this.exploded = true;
+                const count = 60 + Math.random() * 60;
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 * i) / count;
+                    const speed = 2 + Math.random() * 6;
+                    particles.push({
+                        x: this.x, y: this.y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        life: 1,
+                        decay: 0.008 + Math.random() * 0.015,
+                        color: `hsl(${Math.random() * 360}, 100%, ${50 + Math.random() * 40}%)`,
+                        size: 2 + Math.random() * 4
+                    });
+                }
+            }
+
+            draw() {
+                if (this.exploded) return;
+                for (let i = 0; i < this.trail.length; i++) {
+                    const alpha = i / this.trail.length;
+                    ctx.beginPath();
+                    ctx.arc(this.trail[i].x, this.trail[i].y, 2 * alpha, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${alpha * 0.5})`;
+                    ctx.fill();
+                }
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
+        }
+
+        function animateFireworks() {
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                const f = fireworks[i];
+                f.update();
+                f.draw();
+                if (f.exploded && f.life <= 0) fireworks.splice(i, 1);
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.05;
+                p.life -= p.decay;
+                if (p.life <= 0) { particles.splice(i, 1); continue; }
+                ctx.globalAlpha = p.life;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+
+            if (fireworks.length === 0 && particles.length === 0 && !isFireworksRunning) {
+                if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+                return;
+            }
+            animationId = requestAnimationFrame(animateFireworks);
+        }
+
+        function launchFireworks() {
+            isFireworksRunning = true;
+            const count = 8 + Math.random() * 8;
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => { fireworks.push(new Firework()); }, i * 200 + Math.random() * 300);
+            }
+            let launches = 0;
+            const interval = setInterval(() => {
+                if (launches > 4 || !isFireworksRunning) { clearInterval(interval); return; }
+                const c = 3 + Math.random() * 5;
+                for (let i = 0; i < c; i++) {
+                    setTimeout(() => { if (isFireworksRunning) fireworks.push(new Firework()); }, i * 150);
+                }
+                launches++;
+            }, 2000);
+            if (!animationId) animateFireworks();
+            setTimeout(() => { isFireworksRunning = false; }, 10000);
+        }
+
+        function launchConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#F5D742', '#F47920', '#1A4C27', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+            const shapes = ['■', '●', '▲', '★', '♦'];
+            for (let i = 0; i < 120; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.fontSize = (10 + Math.random() * 20) + 'px';
+                confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.opacity = 0.7 + Math.random() * 0.3;
+                container.appendChild(confetti);
+            }
+            setTimeout(() => { container.innerHTML = ''; }, 6000);
+        }
+
+        // ========================================
+        // CÉLÉBRATION
+        // ========================================
+        function showCelebration(data, priceDetail) {
+            const summary = document.getElementById('order-summary');
+            summary.innerHTML = `
+                <div class="line"><span>👤 Client</span><span>${data.fullname}</span></div>
+                <div class="line"><span>📱 Téléphone</span><span>${data.phone}</span></div>
+                <div class="line"><span>📍 Wilaya</span><span>${data.wilaya}</span></div>
+                <div class="line"><span>🏙️ Commune</span><span>${data.commune}</span></div>
+                <div class="line"><span>🏠 Adresse</span><span>${data.address}</span></div>
+                <div class="line"><span>📦 Quantité</span><span>${data.quantity}</span></div>
+                <div class="line"><span>🚚 Livraison</span><span>${priceDetail.fee.toLocaleString()} DA</span></div>
+                <div class="line"><span>💰 Total</span><span>${priceDetail.total.toLocaleString()} DA</span></div>
+            `;
+
+            document.getElementById('celebration-overlay').style.display = 'flex';
+            launchFireworks();
+            setTimeout(launchConfetti, 300);
+            setTimeout(launchConfetti, 1500);
+            setTimeout(launchConfetti, 3000);
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebration-overlay').style.display = 'none';
+            isFireworksRunning = false;
+            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('confetti-container').innerHTML = '';
+        }
+
+        // ========================================
+        // INITIALISATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initialisation...');
+
+            populateWilayas();
+
+            document.getElementById('order-wilaya').addEventListener('change', function() {
+                populateCommunes(this.value);
+                calculatePrice();
+            });
+
+            document.getElementById('order-commune').addEventListener('change', function() {
+                calculatePrice();
+            });
+
+            document.getElementById('quantity').addEventListener('input', function() {
+                let val = parseInt(this.value) || 1;
+                if (val < 1) val = 1;
+                if (val > MAX_QUANTITY) val = MAX_QUANTITY;
+                this.value = val;
+                calculatePrice();
+            });
+
+            document.querySelectorAll('.qty-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = document.getElementById('quantity');
+                    let val = parseInt(input.value) || 1;
+                    if (this.classList.contains('plus')) {
+                        val = Math.min(val + 1, MAX_QUANTITY);
+                    } else {
+                        val = Math.max(val - 1, 1);
+                    }
+                    input.value = val;
+                    calculatePrice();
+                });
+            });
+
+            // ===== BOUTON COMMANDER =====
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                const fullname = document.getElementById('fullname').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const wilaya = document.getElementById('order-wilaya').value;
+                const commune = document.getElementById('order-commune').value;
+                const address = document.getElementById('address').value.trim();
+                const quantity = parseInt(document.getElementById('quantity').value) || 1;
+
+                if (!fullname || !phone || !wilaya || !commune || !address) {
+                    alert('⚠️ Veuillez remplir tous les champs obligatoires :\n- Nom complet\n- Téléphone\n- Wilaya\n- Commune\n- Adresse');
+                    return;
+                }
+
+                const priceDetail = calculatePrice();
+                const data = { fullname, phone, wilaya, commune, address, quantity };
+
+                const btn = this;
+                btn.disabled = true;
+                btn.textContent = '⏳ Envoi en cours...';
+
+                document.getElementById('loading-overlay').style.display = 'flex';
+
+                // Envoyer l'email via Brevo
+                sendOrderEmail(data, priceDetail).then(result => {
+                    document.getElementById('loading-overlay').style.display = 'none';
+
+                    if (result.success) {
+                        showCelebration(data, priceDetail);
+                        btn.textContent = '✅ Commande envoyée !';
+                        setTimeout(() => { btn.textContent = '📩 Commander maintenant'; }, 3000);
+                    } else {
+                        alert('❌ Erreur lors de l\'envoi de la confirmation : ' + result.error);
+                        btn.textContent = '📩 Commander maintenant';
+                    }
+                    btn.disabled = false;
+                }).catch(error => {
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    alert('❌ Erreur lors de l\'envoi. Veuillez réessayer.');
+                    btn.textContent = '📩 Commander maintenant';
+                    btn.disabled = false;
+                });
+            });
+
+            calculatePrice();
+            console.log('✅ Page prête !');
+        });
+    </script>
+</body>
+</html>
