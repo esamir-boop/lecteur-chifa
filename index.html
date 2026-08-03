@@ -280,10 +280,10 @@
 
             <div class="order-wrapper">
                 <div class="order-product">
-                    <img src="assets/lecteur.jpg" alt="Lecteur CHIFA Zoweetek">
-                    <h3>Lecteur CHIFA Zoweetek</h3>
-                    <p class="product-price">4 990 DA</p>
-                    <p class="product-desc">Lecteur de carte à puce USB compatible CHIFA</p>
+                    <img src="assets/lecteur.jpg" alt="Lecteur CHIFA Zoweetek" id="product-image">
+                    <h3 id="product-name">Lecteur CHIFA Zoweetek</h3>
+                    <p class="product-price" id="product-price">4 990 DA</p>
+                    <p class="product-desc" id="product-desc">Lecteur de carte à puce USB compatible CHIFA</p>
                 </div>
 
                 <form id="order-form" class="order-form" onsubmit="return false;">
@@ -296,7 +296,7 @@
                             <input type="number" id="quantity" value="1" min="1" max="4">
                             <button type="button" class="qty-btn plus">+</button>
                         </div>
-                        <small style="color:#6c757d;font-size:0.8rem;">Réduction de 200 DA par quantité supplémentaire (max 4)</small>
+                        <small style="color:#6c757d;font-size:0.8rem;" id="discount-info">Réduction de 200 DA par quantité supplémentaire (max 4)</small>
                     </div>
 
                     <div class="form-group">
@@ -385,23 +385,85 @@
     ======================================== -->
     <script>
         // ========================================
-        // CONFIGURATION
+        // CONFIGURATION (surchargée par config.json)
         // ========================================
-        const UNIT_PRICE = 4990;
-        const DISCOUNT_PER_EXTRA = 200;
-        const MAX_QUANTITY = 4;
+        let CONFIG = {
+            produit: {
+                nom: "Lecteur CHIFA Zoweetek",
+                prix_unitaire: 4990,
+                description: "Lecteur de carte à puce USB compatible CHIFA",
+                image: "assets/lecteur.jpg"
+            },
+            remise: {
+                par_quantite: 200,
+                quantite_max: 4
+            },
+            livraison: {
+                zone1: ["Alger", "Oran", "Constantine", "Annaba", "Sétif", "Blida", "Béjaïa", "Tizi Ouzou", "Boumerdès", "Tipaza"],
+                zone2: ["Tlemcen", "Mostaganem", "Saïda", "Sidi Bel Abbès", "Tiaret", "Médéa", "Djelfa", "Laghouat", "Ghardaïa", "Béchar"],
+                prix_zone1: 500,
+                prix_zone2: 700,
+                prix_zone3: 900
+            },
+            contact: {
+                whatsapp: "213560503228",
+                email: "berchichesamir@gmail.com"
+            },
+            formspree: {
+                endpoint: "https://formspree.io/f/xjgnqakk"
+            }
+        };
 
-        // ⚠️ Votre endpoint Formspree
-        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
+        let UNIT_PRICE = 4990;
+        let DISCOUNT_PER_EXTRA = 200;
+        let MAX_QUANTITY = 4;
+        let FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
 
         // ========================================
-        // DONNÉES DES WILAYAS (chargées depuis cities.json)
+        // DONNÉES DES WILAYAS
         // ========================================
         let wilayaData = {};
         let wilayaNames = [];
 
         // ========================================
-        // CHARGER LES DONNÉES DEPUIS cities.json
+        // CHARGER LA CONFIGURATION
+        // ========================================
+        async function loadConfig() {
+            try {
+                const response = await fetch('config.json');
+                if (!response.ok) {
+                    throw new Error('Fichier config.json non trouvé');
+                }
+                const data = await response.json();
+                CONFIG = data;
+                
+                // Mettre à jour les variables
+                UNIT_PRICE = CONFIG.produit.prix_unitaire;
+                DISCOUNT_PER_EXTRA = CONFIG.remise.par_quantite;
+                MAX_QUANTITY = CONFIG.remise.quantite_max;
+                FORMSPREE_ENDPOINT = CONFIG.formspree.endpoint;
+                
+                // Mettre à jour l'affichage du produit
+                document.getElementById('product-name').textContent = CONFIG.produit.nom;
+                document.getElementById('product-price').textContent = `${CONFIG.produit.prix_unitaire} DA`;
+                document.getElementById('product-desc').textContent = CONFIG.produit.description;
+                document.getElementById('product-image').src = CONFIG.produit.image;
+                
+                // Mettre à jour les infos de réduction
+                document.getElementById('discount-info').textContent = 
+                    `Réduction de ${DISCOUNT_PER_EXTRA} DA par quantité supplémentaire (max ${MAX_QUANTITY})`;
+                
+                // Recalculer le prix
+                calculatePrice();
+                
+                console.log('✅ Configuration chargée :', CONFIG);
+            } catch (error) {
+                console.error('❌ Erreur chargement config:', error);
+            }
+        }
+
+        // ========================================
+        // CHARGER LES DONNÉES DES WILAYAS
         // ========================================
         async function loadWilayasData() {
             try {
@@ -415,7 +477,6 @@
                 const data = await response.json();
                 console.log(`📥 ${data.total_wilayas} wilayas, ${data.total_communes} communes`);
                 
-                // Organiser les données
                 wilayaData = {};
                 data.wilayas.forEach(wilaya => {
                     const communes = data.communes
@@ -427,12 +488,10 @@
                     }
                 });
                 
-                // ⚠️ ICI : SUPPRIMEZ "const"
                 wilayaNames = Object.keys(wilayaData);
                 console.log(`✅ ${wilayaNames.length} wilayas chargées`);
                 console.log(`✅ ${Object.values(wilayaData).reduce((a,b) => a + b.length, 0)} communes chargées`);
                 
-                // Remplir le select
                 populateWilayas();
                 
             } catch (error) {
@@ -499,11 +558,16 @@
 
         function getDeliveryFee(wilayaName) {
             if (!wilayaName) return 0;
-            const zone1 = ['Alger', 'Oran', 'Constantine', 'Annaba', 'Sétif', 'Blida', 'Béjaïa', 'Tizi Ouzou', 'Boumerdès', 'Tipaza'];
-            const zone2 = ['Tlemcen', 'Mostaganem', 'Saïda', 'Sidi Bel Abbès', 'Tiaret', 'Médéa', 'Djelfa', 'Laghouat', 'Ghardaïa', 'Béchar'];
-            if (zone1.includes(wilayaName)) return 500;
-            if (zone2.includes(wilayaName)) return 700;
-            return 900;
+            
+            const zone1 = CONFIG.livraison.zone1;
+            const zone2 = CONFIG.livraison.zone2;
+            const prixZone1 = CONFIG.livraison.prix_zone1;
+            const prixZone2 = CONFIG.livraison.prix_zone2;
+            const prixZone3 = CONFIG.livraison.prix_zone3;
+            
+            if (zone1.includes(wilayaName)) return prixZone1;
+            if (zone2.includes(wilayaName)) return prixZone2;
+            return prixZone3;
         }
 
         function calculatePrice() {
@@ -534,7 +598,7 @@
         }
 
         // ========================================
-        // ENVOI EMAIL VIA FORMSPREE
+        // ENVOI EMAIL
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
             const formData = new FormData();
@@ -749,11 +813,14 @@
         // ========================================
         // INITIALISATION
         // ========================================
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 Initialisation...');
 
+            // Charger la configuration
+            await loadConfig();
+
             // Charger les données depuis cities.json
-            loadWilayasData();
+            await loadWilayasData();
 
             document.getElementById('order-wilaya').addEventListener('change', function() {
                 populateCommunes(this.value);
