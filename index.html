@@ -331,6 +331,20 @@
                         <input type="tel" id="phone" placeholder="Ex: 0550 12 34 56" required>
                     </div>
 
+                    <!-- ===== ACTIVITÉ (NOUVEAU) ===== -->
+                    <div class="form-group">
+                        <label>🏥 Activité</label>
+                        <select id="activity" name="activity" required>
+                            <option value="">Sélectionnez votre activité</option>
+                            <option value="Pharmacie">Pharmacie</option>
+                            <option value="Cabinet médical">Cabinet médical</option>
+                            <option value="Dentiste">Dentiste</option>
+                            <option value="Opticien">Opticien</option>
+                            <option value="Clinique">Clinique</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label>📍 Wilaya</label>
                         <select id="order-wilaya">
@@ -605,6 +619,7 @@
             
             formData.append('fullname', data.fullname);
             formData.append('phone', data.phone);
+            formData.append('activity', data.activity); // ← NOUVEAU
             formData.append('wilaya', data.wilaya);
             formData.append('commune', data.commune);
             formData.append('address', data.address);
@@ -787,6 +802,7 @@
             summary.innerHTML = `
                 <div class="line"><span>👤 Client</span><span>${data.fullname}</span></div>
                 <div class="line"><span>📱 Téléphone</span><span>${data.phone}</span></div>
+                <div class="line"><span>🏥 Activité</span><span>${data.activity}</span></div>
                 <div class="line"><span>📍 Wilaya</span><span>${data.wilaya}</span></div>
                 <div class="line"><span>🏙️ Commune</span><span>${data.commune}</span></div>
                 <div class="line"><span>🏠 Adresse</span><span>${data.address}</span></div>
@@ -857,18 +873,19 @@
             document.getElementById('submitBtn').addEventListener('click', function() {
                 const fullname = document.getElementById('fullname').value.trim();
                 const phone = document.getElementById('phone').value.trim();
+                const activity = document.getElementById('activity').value; // ← NOUVEAU
                 const wilaya = document.getElementById('order-wilaya').value;
                 const commune = document.getElementById('order-commune').value;
                 const address = document.getElementById('address').value.trim();
                 const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
-                if (!fullname || !phone || !wilaya || !commune || !address) {
-                    alert('⚠️ Veuillez remplir tous les champs obligatoires :\n- Nom complet\n- Téléphone\n- Wilaya\n- Commune\n- Adresse');
+                if (!fullname || !phone || !activity || !wilaya || !commune || !address) {
+                    alert('⚠️ Veuillez remplir tous les champs obligatoires !');
                     return;
                 }
 
                 const priceDetail = calculatePrice();
-                const data = { fullname, phone, wilaya, commune, address, quantity };
+                const data = { fullname, phone, activity, wilaya, commune, address, quantity };
 
                 const btn = this;
                 btn.disabled = true;
