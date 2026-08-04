@@ -2,6 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+<!-- ===== SÉCURITÉ ===== -->
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<meta http-equiv="X-Frame-Options" content="DENY">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur CHIFA Zoweetek</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -361,6 +364,11 @@
                     </div>
 
                     <div class="form-group">
+<!-- Champ anti-bot (invisible pour les humains) -->
+<div style="display:none;">
+    <label for="website">Website</label>
+    <input type="text" id="website" name="website" value="">
+</div>
                         <label>🏠 Adresse</label>
                         <textarea id="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
                     </div>
@@ -432,6 +440,15 @@
         let DISCOUNT_PER_EXTRA = 200;
         let MAX_QUANTITY = 4;
         let FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
+// ===== SÉCURITÉ : VARIABLES =====
+let isSubmitting = false;
+
+// ===== SÉCURITÉ : NETTOYAGE =====
+function sanitizeInput(input) {
+    const element = document.createElement('div');
+    element.textContent = input;
+    return element.innerHTML;
+}
 
         // ========================================
         // DONNÉES DES WILAYAS
@@ -879,6 +896,48 @@
                 const address = document.getElementById('address').value.trim();
                 const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
+    // ===== SÉCURITÉ : EMPÊCHER LES DOUBLES CLICS =====
+    if (isSubmitting) return;
+    isSubmitting = true;
+
+    // ===== SÉCURITÉ : NETTOYER LES ENTRÉES =====
+    const cleanName = sanitizeInput(fullname);
+    const cleanPhone = sanitizeInput(phone);
+    const cleanAddress = sanitizeInput(address);
+
+    // ===== SÉCURITÉ : VALIDATION =====
+    if (cleanName.length < 2) {
+        alert('⚠️ Le nom doit contenir au moins 2 caractères');
+        isSubmitting = false;
+        return;
+    }
+
+    const cleanPhoneNumber = cleanPhone.replace(/\s/g, '');
+    if (!/^[0-9]{10,11}$/.test(cleanPhoneNumber)) {
+        alert('⚠️ Numéro de téléphone invalide (10 ou 11 chiffres)');
+        isSubmitting = false;
+        return;
+    }
+
+    if (cleanAddress.length < 5) {
+        alert('⚠️ L\'adresse est trop courte');
+        isSubmitting = false;
+        return;
+    }
+
+    if (!activity) {
+        alert('⚠️ Veuillez sélectionner votre activité');
+        isSubmitting = false;
+        return;
+    }
+
+    // ===== SÉCURITÉ : VÉRIFIER LE HONEYPOT (anti-bot) =====
+    const website = document.getElementById('website').value;
+    if (website) {
+        alert('❌ Soumission détectée comme suspecte');
+        isSubmitting = false;
+        return;
+    }
                 if (!fullname || !phone || !activity || !wilaya || !commune || !address) {
                     alert('⚠️ Veuillez remplir tous les champs obligatoires !');
                     return;
@@ -911,7 +970,10 @@
                     btn.textContent = '📩 Commander maintenant';
                     btn.disabled = false;
                 });
-            });
+            });    // Réactiver le bouton après l'envoi
+    setTimeout(() => {
+        isSubmitting = false;
+    }, 5000);
 
             calculatePrice();
             console.log('✅ Page prête !');
