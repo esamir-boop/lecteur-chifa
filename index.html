@@ -273,7 +273,7 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#" class="logo">
-                <div class="logo-icon" id="logo-icon">📇</div>
+                <img src="assets/logo1.jpg" alt="Logo" id="logo-icon" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
                 <div class="logo-text">
                     <span class="main" id="logo-main">Lecteur CHIFA</span>
                     <span class="sub" id="logo-sub">Zoweetek</span>
@@ -505,7 +505,7 @@
                 document.getElementById('product-image').src = CONFIG.produit.image;
                 
                 // Mettre à jour le LOGO
-                document.getElementById('logo-icon').textContent = CONFIG.logo.icone;
+                document.getElementById('logo-icon').src = CONFIG.logo.image;
                 document.getElementById('logo-main').textContent = CONFIG.logo.texte;
                 document.getElementById('logo-sub').textContent = CONFIG.logo.sous_texte;
                 
