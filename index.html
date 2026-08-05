@@ -346,10 +346,7 @@
                     </div>
 
                     <!-- 6. ADRESSE -->
-                    <div class="form-group">
-                        <label>🏠 Adresse complète</label>
-                        <textarea id="address" rows="3" placeholder="Ex: Rue Didouche Mourad, N° 12" required></textarea>
-                    </div>
+                   
 
                     <!-- 7. QUANTITÉ -->
                     <div class="form-group">
@@ -646,7 +643,6 @@
             formData.append('activity', data.activity);
             formData.append('wilaya', data.wilaya);
             formData.append('commune', data.commune);
-            formData.append('address', data.address);
             formData.append('quantity', data.quantity);
             formData.append('subtotal', priceDetail.subtotal.toLocaleString());
             if (priceDetail.discount > 0) {
@@ -820,7 +816,6 @@
                 <div class="line"><span>🏥 Activité</span><span>${data.activity}</span></div>
                 <div class="line"><span>📍 Wilaya</span><span>${data.wilaya}</span></div>
                 <div class="line"><span>🏙️ Commune</span><span>${data.commune}</span></div>
-                <div class="line"><span>🏠 Adresse</span><span>${data.address}</span></div>
                 <div class="line"><span>📦 Quantité</span><span>${data.quantity}</span></div>
                 <div class="line"><span>🚚 Livraison</span><span>${priceDetail.fee.toLocaleString()} DA</span></div>
                 <div class="line"><span>💰 Total</span><span>${priceDetail.total.toLocaleString()} DA</span></div>
@@ -888,14 +883,13 @@
                 const activity = document.getElementById('activity').value;
                 const wilaya = document.getElementById('order-wilaya').value;
                 const commune = document.getElementById('order-commune').value;
-                const address = document.getElementById('address').value.trim();
+                
                 const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
                 // Nettoyer les entrées
                 const cleanName = sanitizeInput(fullname);
                 const cleanPhone = sanitizeInput(phone);
-                const cleanAddress = sanitizeInput(address);
-
+                
                 // ===== VALIDATIONS AVEC MESSAGES CLAIRS =====
                 if (!activity) {
                     alert('⚠️ Veuillez sélectionner votre activité');
@@ -928,11 +922,7 @@
                     return;
                 }
 
-                if (cleanAddress.length < 5) {
-                    alert('⚠️ Veuillez remplir l\'adresse correctement (au moins 5 caractères)');
-                    isSubmitting = false;
-                    return;
-                }
+
 
                 // Vérifier le honeypot (anti-bot)
                 const website = document.getElementById('website').value;
@@ -949,7 +939,6 @@
                     activity, 
                     wilaya, 
                     commune, 
-                    address: cleanAddress, 
                     quantity 
                 };
 
