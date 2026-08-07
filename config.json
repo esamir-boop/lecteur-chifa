@@ -24,5 +24,10 @@
   "contact": {
     "whatsapp": "213560503228",
     "email": "berchichesamir@gmail.com"
+  },
+  "emailjs": {
+    "public_key": "tc8CLfJDs3E9-EIQ3",
+    "service_id": "service_hguu30b",
+    "template_id": "template_cx2lh99"
   }
 }

@@ -704,28 +704,50 @@
         }
 
         // ========================================
-        // ENVOI EMAIL VIA EMAILJS
+        // ENVOI EMAIL VIA EMAILJS (UNE SEULE VARIABLE)
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
-    const templateParams = {
-        client_name: data.fullname,
-        client_phone: data.phone,
-        total: priceDetail.total.toLocaleString()
-    };
+            // Construire le message complet
+            const messageText = `
+        📝 NOUVELLE COMMANDE
 
-    try {
-        const response = await emailjs.send(
-            EMAILJS_CONFIG.service_id,
-            EMAILJS_CONFIG.template_id,
-            templateParams
-        );
-        console.log('✅ Email envoyé !', response);
-        return { success: true };
-    } catch (error) {
-        console.error('❌ Erreur:', error);
-        return { success: false, error: error.text || 'Erreur' };
-    }
-}
+        👤 Client
+        Nom: ${data.fullname}
+        Téléphone: ${data.phone}
+        Activité: ${data.activity}
+
+        📍 Livraison
+        Wilaya: ${data.wilaya}
+        Commune: ${data.commune}
+
+        📦 Détail
+        Quantité: ${data.quantity}
+        Sous-total: ${priceDetail.subtotal.toLocaleString()} DA
+        Remise: ${priceDetail.discount > 0 ? `${priceDetail.discount.toLocaleString()} DA` : '0 DA'}
+        Livraison: ${priceDetail.fee.toLocaleString()} DA
+        Total: ${priceDetail.total.toLocaleString()} DA
+
+        📅 ${new Date().toLocaleString('fr-DZ')}
+        `;
+
+            const templateParams = {
+                message: messageText
+            };
+
+            try {
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.service_id,
+                    EMAILJS_CONFIG.template_id,
+                    templateParams
+                );
+                console.log('✅ Email envoyé !', response);
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                return { success: false, error: error.text || 'Erreur' };
+            }
+        }
+
         // ========================================
         // FEUX D'ARTIFICE
         // ========================================
