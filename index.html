@@ -138,72 +138,7 @@
         .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .form-footer { text-align: center; margin-top: 12px; font-size: 0.8rem; color: #6c757d; }
 
-        .share-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            text-align: center;
-        }
-        .share-section h3 {
-            color: #1A4C27;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .share-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: white;
-        }
-        .share-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-        .share-btn.whatsapp { background: #25D366; }
-        .share-btn.whatsapp:hover { background: #1da851; }
-        .share-btn.facebook { background: #1877F2; }
-        .share-btn.facebook:hover { background: #1664d9; }
-        .share-btn.twitter { background: #000000; }
-        .share-btn.twitter:hover { background: #1a1a1a; }
-        .share-btn.instagram { 
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-        }
-        .share-btn.instagram:hover { 
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 25px rgba(188, 24, 136, 0.3);
-        }
-        .share-btn.email { background: #6c757d; }
-        .share-btn.email:hover { background: #5a6268; }
-        .share-btn .icon { font-size: 1.2rem; }
-
-        @media (max-width: 600px) {
-            .share-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .share-btn {
-                width: 100%;
-                justify-content: center;
-                padding: 12px 20px;
-            }
-        }
+        
 
         .status-msg { padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.9rem; }
         .status-msg.error { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -441,29 +376,7 @@
                     </div>
                 </form>
 
-                <div class="share-section">
-                    <h3>📤 Partagez cette offre</h3>
-                    <p style="color:#6c757d;font-size:0.9rem;margin-bottom:15px;">
-                        Partagez avec vos collègues et amis !
-                    </p>
-                    <div class="share-buttons">
-                        <a href="#" class="share-btn whatsapp" id="share-whatsapp">
-                            <span class="icon">📱</span> WhatsApp
-                        </a>
-                        <a href="#" class="share-btn facebook" id="share-facebook">
-                            <span class="icon">📘</span> Facebook
-                        </a>
-                        <a href="#" class="share-btn twitter" id="share-twitter">
-                            <span class="icon">🐦</span> Twitter
-                        </a>
-                        <a href="#" class="share-btn instagram" id="share-instagram">
-                            <span class="icon">📸</span> Instagram
-                        </a>
-                        <a href="#" class="share-btn email" id="share-email">
-                            <span class="icon">📧</span> Email
-                        </a>
-                    </div>
-                </div>
+               
             </div>
         </div>
     </section>
