@@ -599,49 +599,57 @@ let EMAILJS_CONFIG = {
         // CHARGER LA CONFIGURATION
         // ========================================
         async function loadConfig() {
-            try {
-                const response = await fetch('config.json');
-                if (!response.ok) {
-                    throw new Error('Fichier config.json non trouvé');
-                }
-                const data = await response.json();
-                CONFIG = data;
-                
-                // Mettre à jour les variables
-                UNIT_PRICE = CONFIG.produit.prix_unitaire;
-                DISCOUNT_PER_EXTRA = CONFIG.remise.par_quantite;
-                MAX_QUANTITY = CONFIG.remise.quantite_max;
-                FORMSPREE_ENDPOINT = CONFIG.formspree.endpoint;
-        // Charger EmailJS
-        EMAILJS_CONFIG.public_key = CONFIG.emailjs.public_key;
-        EMAILJS_CONFIG.service_id = CONFIG.emailjs.service_id;
-        EMAILJS_CONFIG.template_id = CONFIG.emailjs.template_id;
-        
-        // Initialiser EmailJS
-        emailjs.init(EMAILJS_CONFIG.public_key);
-                
-                // Mettre à jour le produit
-                document.getElementById('product-name').textContent = CONFIG.produit.nom;
-                document.getElementById('product-price').textContent = `${CONFIG.produit.prix_unitaire} DA`;
-                document.getElementById('product-desc').textContent = CONFIG.produit.description;
-                document.getElementById('product-image').src = CONFIG.produit.image;
-                
-                // Mettre à jour le LOGO
-                document.getElementById('logo-icon').src = CONFIG.logo.image;
-                document.getElementById('logo-main').textContent = CONFIG.logo.texte;
-                document.getElementById('logo-sub').textContent = CONFIG.logo.sous_texte;
-                
-                // Mettre à jour les infos de réduction
-                document.getElementById('discount-info').textContent = 
-                    `Réduction de ${DISCOUNT_PER_EXTRA} DA par quantité supplémentaire (max ${MAX_QUANTITY})`;
-                
-                calculatePrice();
-                
-                console.log('✅ Configuration chargée :', CONFIG);
-            } catch (error) {
-                console.error('❌ Erreur chargement config:', error);
-            }
+    try {
+        const response = await fetch('config.json');
+        if (!response.ok) {
+            throw new Error('Fichier config.json non trouvé');
         }
+        const data = await response.json();
+        CONFIG = data;
+        
+        // Mettre à jour les variables
+        UNIT_PRICE = CONFIG.produit.prix_unitaire;
+        DISCOUNT_PER_EXTRA = CONFIG.remise.par_quantite;
+        MAX_QUANTITY = CONFIG.remise.quantite_max;
+        
+        // --- CHARGER EMAILJS ---
+        if (CONFIG.emailjs) {
+            EMAILJS_CONFIG.public_key = CONFIG.emailjs.public_key;
+            EMAILJS_CONFIG.service_id = CONFIG.emailjs.service_id;
+            EMAILJS_CONFIG.template_id = CONFIG.emailjs.template_id;
+            
+            // Initialiser EmailJS
+            emailjs.init(EMAILJS_CONFIG.public_key);
+            console.log('✅ EmailJS initialisé avec la clé:', EMAILJS_CONFIG.public_key);
+        } else {
+            console.warn('⚠️ Section emailjs manquante dans config.json');
+        }
+        
+        // Mettre à jour le produit
+        document.getElementById('product-name').textContent = CONFIG.produit.nom;
+        document.getElementById('product-price').textContent = `${CONFIG.produit.prix_unitaire} DA`;
+        document.getElementById('product-desc').textContent = CONFIG.produit.description;
+        document.getElementById('product-image').src = CONFIG.produit.image;
+        
+        // Mettre à jour le LOGO
+        if (CONFIG.logo.image) {
+            document.getElementById('logo-icon').src = CONFIG.logo.image;
+        }
+        document.getElementById('logo-main').textContent = CONFIG.logo.texte;
+        document.getElementById('logo-sub').textContent = CONFIG.logo.sous_texte;
+        
+        // Mettre à jour les infos de réduction
+        document.getElementById('discount-info').textContent = 
+            `Réduction de ${DISCOUNT_PER_EXTRA} DA par quantité supplémentaire (max ${MAX_QUANTITY})`;
+        
+        calculatePrice();
+        
+        console.log('✅ Configuration chargée :', CONFIG);
+    } catch (error) {
+        console.error('❌ Erreur chargement config:', error);
+    }
+}
+        
 
         // ========================================
         // CHARGER LES DONNÉES DES WILAYAS
