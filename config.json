@@ -6,7 +6,7 @@
     "image": "assets/lecteur.jpg"
   },
   "logo": {
-    "image": "assets/logo1.png",
+    "icone": "📇",
     "texte": "Lecteur CHIFA",
     "sous_texte": "Zoweetek"
   },
@@ -24,10 +24,5 @@
   "contact": {
     "whatsapp": "213560503228",
     "email": "berchichesamir@gmail.com"
-  },
-  "emailjs": {
-    "public_key": "tc8CLfJDs3E9-EIQ3",
-    "service_id": "service_hguu30b",
-    "template_id": "cx2lh99"
   }
 }

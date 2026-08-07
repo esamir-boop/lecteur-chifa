@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur CHIFA Zoweetek</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -11,7 +11,6 @@
         body { font-family: 'Poppins', sans-serif; background: #f0f2f5; color: #1a1a2e; overflow-x: hidden; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* ===== NAVIGATION - LOGO MODIFIABLE ===== */
         .navbar {
             background: #1A4C27;
             padding: 12px 0;
@@ -70,7 +69,6 @@
 
         .order-wrapper { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; max-width: 1100px; margin: 0 auto; align-items: start; }
 
-        /* ===== PRODUIT ===== */
         .order-product {
             background: white;
             border-radius: 16px;
@@ -102,7 +100,6 @@
             margin-top: 5px;
         }
 
-        /* ===== FORMULAIRE ===== */
         .order-form {
             background: white;
             border-radius: 16px;
@@ -140,86 +137,73 @@
         .btn-submit:hover { background: #2A6B3A; transform: translateY(-2px); box-shadow: 0 6px 25px rgba(26,76,39,0.3); }
         .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .form-footer { text-align: center; margin-top: 12px; font-size: 0.8rem; color: #6c757d; }
-/* ===== BOUTONS DE PARTAGE ===== */
-.share-section {
-    margin-top: 30px;
-    padding: 20px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    text-align: center;
-}
 
-.share-section h3 {
-    color: #1A4C27;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-}
+        .share-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .share-section h3 {
+            color: #1A4C27;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.whatsapp:hover { background: #1da851; }
+        .share-btn.facebook { background: #1877F2; }
+        .share-btn.facebook:hover { background: #1664d9; }
+        .share-btn.twitter { background: #000000; }
+        .share-btn.twitter:hover { background: #1a1a1a; }
+        .share-btn.instagram { 
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+        .share-btn.instagram:hover { 
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(188, 24, 136, 0.3);
+        }
+        .share-btn.email { background: #6c757d; }
+        .share-btn.email:hover { background: #5a6268; }
+        .share-btn .icon { font-size: 1.2rem; }
 
-.share-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.share-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    color: white;
-}
-
-.share-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
-
-.share-btn.whatsapp { background: #25D366; }
-.share-btn.whatsapp:hover { background: #1da851; }
-
-.share-btn.facebook { background: #1877F2; }
-.share-btn.facebook:hover { background: #1664d9; }
-
-.share-btn.twitter { background: #000000; }
-.share-btn.twitter:hover { background: #1a1a1a; }
-
-.share-btn.instagram { 
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-}
-.share-btn.instagram:hover { 
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 6px 25px rgba(188, 24, 136, 0.3);
-}
-
-.share-btn.email { background: #6c757d; }
-.share-btn.email:hover { background: #5a6268; }
-
-.share-btn .icon {
-    font-size: 1.2rem;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-    .share-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    .share-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 20px;
-    }
-}
+        @media (max-width: 600px) {
+            .share-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .share-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 20px;
+            }
+        }
 
         .status-msg { padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.9rem; }
         .status-msg.error { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -231,7 +215,6 @@
         @media (max-width: 768px) { .order-form { padding: 20px; } }
         @media (max-width: 600px) { .logo-icon { width: 34px; height: 34px; font-size: 1.2rem; } .logo-text .main { font-size: 0.95rem; } .logo-text .sub { font-size: 0.5rem; } .order-header h2 { font-size: 1.5rem; } .order-product img { max-height: 150px; } }
 
-        /* ===== CÉLÉBRATION ===== */
         #celebration-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -350,11 +333,10 @@
 </head>
 <body>
 
-    <!-- ===== NAVIGATION ===== -->
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="assets/logo1.png" alt="Logo" id="logo-icon" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <div class="logo-icon" id="logo-icon">📇</div>
                 <div class="logo-text">
                     <span class="main" id="logo-main">Lecteur CHIFA</span>
                     <span class="sub" id="logo-sub">Zoweetek</span>
@@ -363,7 +345,6 @@
         </div>
     </nav>
 
-    <!-- ===== SECTION COMMANDE ===== -->
     <section class="order-section" id="commande">
         <div class="container">
             <div class="order-header">
@@ -371,19 +352,16 @@
             </div>
 
             <div class="order-wrapper">
-                <!-- ===== PRODUIT ===== -->
                 <div class="order-product">
-    <img src="assets/lecteur.jpg" alt="Lecteur CHIFA Zoweetek" id="product-image">
-    <h3 id="product-name">Lecteur CHIFA Zoweetek</h3>
-    <p class="product-price" id="product-price"></p>  <!-- ← À supprimer -->
-    <p class="product-desc" id="product-desc">Lecteur de carte à puce USB compatible CHIFA</p>
-</div>
+                    <img src="assets/lecteur.jpg" alt="Lecteur CHIFA Zoweetek" id="product-image">
+                    <h3 id="product-name">Lecteur CHIFA Zoweetek</h3>
+                    <p class="product-price" id="product-price"></p>
+                    <p class="product-desc" id="product-desc">Lecteur de carte à puce USB compatible CHIFA</p>
+                </div>
 
-                <!-- ===== FORMULAIRE ===== -->
                 <form id="order-form" class="order-form" onsubmit="return false;">
                     <div id="statusMessage" class="status-msg"></div>
 
-                    <!-- 1. ACTIVITÉ -->
                     <div class="form-group">
                         <label>🏥 Activité</label>
                         <select id="activity" name="activity" required>
@@ -397,19 +375,16 @@
                         </select>
                     </div>
 
-                    <!-- 2. NOM -->
                     <div class="form-group">
                         <label>👤 Nom complet</label>
                         <input type="text" id="fullname" placeholder="Ex: Ahmed Benali" required>
                     </div>
 
-                    <!-- 3. TÉLÉPHONE -->
                     <div class="form-group">
                         <label>📱 Téléphone</label>
                         <input type="tel" id="phone" placeholder="Ex: 0550 12 34 56" required>
                     </div>
 
-                    <!-- 4. WILAYA -->
                     <div class="form-group">
                         <label>📍 Wilaya</label>
                         <select id="order-wilaya">
@@ -417,7 +392,6 @@
                         </select>
                     </div>
 
-                    <!-- 5. COMMUNE -->
                     <div class="form-group">
                         <label>🏙️ Commune</label>
                         <select id="order-commune">
@@ -426,10 +400,6 @@
                         <div id="communeLoading" class="loading-text" style="display:none;">⏳ Chargement des communes...</div>
                     </div>
 
-                    <!-- 6. ADRESSE -->
-                   
-
-                    <!-- 7. QUANTITÉ -->
                     <div class="form-group">
                         <label>📦 Quantité</label>
                         <div class="quantity-selector">
@@ -440,7 +410,6 @@
                         <small style="color:#6c757d;font-size:0.75rem;" id="discount-info">Réduction de 200 DA par quantité supplémentaire (max 4)</small>
                     </div>
 
-                    <!-- 8. DÉTAIL DU PRIX -->
                     <div class="form-group">
                         <label>💰 Détail du prix</label>
                         <div class="price-detail">
@@ -463,77 +432,63 @@
                         </div>
                     </div>
 
-                    <!-- 9. BOUTON -->
                     <button type="button" id="submitBtn" class="btn-submit">📩 Commander maintenant</button>
                     <p class="form-footer">🔒 Vos informations sont sécurisées</p>
 
-                    <!-- Champ honeypot anti-bot -->
                     <div style="display:none;">
                         <label for="website">Website</label>
                         <input type="text" id="website" name="website" value="">
                     </div>
                 </form>
-<!-- ===== BOUTONS DE PARTAGE ===== -->
-<div class="share-section">
-    <h3>📤 Partagez cette offre</h3>
-    <p style="color:#6c757d;font-size:0.9rem;margin-bottom:15px;">
-        Partagez avec vos collègues et amis !
-    </p>
-    <div class="share-buttons">
-        <!-- WhatsApp -->
-        <a href="#" class="share-btn whatsapp" id="share-whatsapp">
-            <span class="icon">📱</span> WhatsApp
-        </a>
-        <!-- Facebook -->
-        <a href="#" class="share-btn facebook" id="share-facebook">
-            <span class="icon">📘</span> Facebook
-        </a>
-        <!-- Twitter -->
-        <a href="#" class="share-btn twitter" id="share-twitter">
-            <span class="icon">🐦</span> Twitter
-        </a>
-        <!-- Instagram (lien vers votre profil) -->
-        <a href="#" class="share-btn instagram" id="share-instagram">
-            <span class="icon">📸</span> Instagram
-        </a>
-        <!-- Email -->
-        <a href="#" class="share-btn email" id="share-email">
-            <span class="icon">📧</span> Email
-        </a>
-    </div>
-</div>
+
+                <div class="share-section">
+                    <h3>📤 Partagez cette offre</h3>
+                    <p style="color:#6c757d;font-size:0.9rem;margin-bottom:15px;">
+                        Partagez avec vos collègues et amis !
+                    </p>
+                    <div class="share-buttons">
+                        <a href="#" class="share-btn whatsapp" id="share-whatsapp">
+                            <span class="icon">📱</span> WhatsApp
+                        </a>
+                        <a href="#" class="share-btn facebook" id="share-facebook">
+                            <span class="icon">📘</span> Facebook
+                        </a>
+                        <a href="#" class="share-btn twitter" id="share-twitter">
+                            <span class="icon">🐦</span> Twitter
+                        </a>
+                        <a href="#" class="share-btn instagram" id="share-instagram">
+                            <span class="icon">📸</span> Instagram
+                        </a>
+                        <a href="#" class="share-btn email" id="share-email">
+                            <span class="icon">📧</span> Email
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== LOADING ===== -->
     <div id="loading-overlay">
         <div class="spinner"></div>
         <p>⏳ Envoi de votre commande...</p>
     </div>
 
-    <!-- ===== CÉLÉBRATION ===== -->
     <div id="celebration-overlay">
         <div id="celebration-content">
             <span class="emoji-big">🎉</span>
             <h1>Félicitations ! 🎊</h1>
             <p class="subtitle">Votre commande a été validée avec succès !</p>
-            
             <div class="order-summary" id="order-summary"></div>
-            <button class="btn-close-celebration" onclick="closeCelebration()">✅ </button>
+            <button class="btn-close-celebration" onclick="closeCelebration()">✅ J'ai compris</button>
         </div>
     </div>
 
-    <!-- ===== FEUX D'ARTIFICE ===== -->
     <canvas id="fireworks-canvas"></canvas>
     <div class="confetti-container" id="confetti-container"></div>
 
-    <!-- ========================================
-         SCRIPTS
-    ======================================== -->
     <script>
         // ========================================
-        // CONFIGURATION (surchargée par config.json)
+        // CONFIGURATION
         // ========================================
         let CONFIG = {
             produit: {
@@ -562,23 +517,26 @@
                 whatsapp: "213560503228",
                 email: "berchichesamir@gmail.com"
             },
-            formspree: {
-                endpoint: "https://formspree.io/f/xjgnqakk"
+            emailjs: {
+                public_key: "tc8CLfJDs3E9-EIQ3",
+                service_id: "service_hguu30b",
+                template_id: "template_cx2lh99"
             }
         };
 
         let UNIT_PRICE = 4900;
         let DISCOUNT_PER_EXTRA = 200;
         let MAX_QUANTITY = 4;
-        let FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
-// ========================================
-// CONFIGURATION EMAILJS
-// ========================================
-let EMAILJS_CONFIG = {
-    public_key: 'tc8CLfJDs3E9-EIQ3',
-    service_id: 'service_hguu30b',
-    template_id: 'template_e13c6yq'
-};
+
+        // ===== CONFIGURATION EMAILJS =====
+        let EMAILJS_CONFIG = {
+            public_key: 'tc8CLfJDs3E9-EIQ3',
+            service_id: 'service_hguu30b',
+            template_id: 'template_cx2lh99'
+        };
+
+        // Initialiser EmailJS
+        emailjs.init(EMAILJS_CONFIG.public_key);
 
         // ===== SÉCURITÉ =====
         let isSubmitting = false;
@@ -599,60 +557,39 @@ let EMAILJS_CONFIG = {
         // CHARGER LA CONFIGURATION
         // ========================================
         async function loadConfig() {
-    try {
-        const response = await fetch('config.json');
-        if (!response.ok) {
-            throw new Error('Fichier config.json non trouvé');
+            try {
+                const response = await fetch('config.json');
+                if (!response.ok) {
+                    throw new Error('Fichier config.json non trouvé');
+                }
+                const data = await response.json();
+                CONFIG = data;
+                
+                UNIT_PRICE = CONFIG.produit.prix_unitaire;
+                DISCOUNT_PER_EXTRA = CONFIG.remise.par_quantite;
+                MAX_QUANTITY = CONFIG.remise.quantite_max;
+                
+                document.getElementById('product-name').textContent = CONFIG.produit.nom;
+                document.getElementById('product-price').textContent = `${CONFIG.produit.prix_unitaire} DA`;
+                document.getElementById('product-desc').textContent = CONFIG.produit.description;
+                document.getElementById('product-image').src = CONFIG.produit.image;
+                
+                document.getElementById('logo-icon').textContent = CONFIG.logo.icone;
+                document.getElementById('logo-main').textContent = CONFIG.logo.texte;
+                document.getElementById('logo-sub').textContent = CONFIG.logo.sous_texte;
+                
+                document.getElementById('discount-info').textContent = 
+                    `Réduction de ${DISCOUNT_PER_EXTRA} DA par quantité supplémentaire (max ${MAX_QUANTITY})`;
+                
+                calculatePrice();
+                console.log('✅ Configuration chargée');
+            } catch (error) {
+                console.error('❌ Erreur chargement config:', error);
+            }
         }
-        const data = await response.json();
-        CONFIG = data;
-        
-        // Mettre à jour les variables
-        UNIT_PRICE = CONFIG.produit.prix_unitaire;
-        DISCOUNT_PER_EXTRA = CONFIG.remise.par_quantite;
-        MAX_QUANTITY = CONFIG.remise.quantite_max;
-        
-        // --- CHARGER EMAILJS ---
-        if (CONFIG.emailjs) {
-            EMAILJS_CONFIG.public_key = CONFIG.emailjs.public_key;
-            EMAILJS_CONFIG.service_id = CONFIG.emailjs.service_id;
-            EMAILJS_CONFIG.template_id = CONFIG.emailjs.template_id;
-            
-            // Initialiser EmailJS
-            emailjs.init(EMAILJS_CONFIG.public_key);
-            console.log('✅ EmailJS initialisé avec la clé:', EMAILJS_CONFIG.public_key);
-        } else {
-            console.warn('⚠️ Section emailjs manquante dans config.json');
-        }
-        
-        // Mettre à jour le produit
-        document.getElementById('product-name').textContent = CONFIG.produit.nom;
-        document.getElementById('product-price').textContent = `${CONFIG.produit.prix_unitaire} DA`;
-        document.getElementById('product-desc').textContent = CONFIG.produit.description;
-        document.getElementById('product-image').src = CONFIG.produit.image;
-        
-        // Mettre à jour le LOGO
-        if (CONFIG.logo.image) {
-            document.getElementById('logo-icon').src = CONFIG.logo.image;
-        }
-        document.getElementById('logo-main').textContent = CONFIG.logo.texte;
-        document.getElementById('logo-sub').textContent = CONFIG.logo.sous_texte;
-        
-        // Mettre à jour les infos de réduction
-        document.getElementById('discount-info').textContent = 
-            `Réduction de ${DISCOUNT_PER_EXTRA} DA par quantité supplémentaire (max ${MAX_QUANTITY})`;
-        
-        calculatePrice();
-        
-        console.log('✅ Configuration chargée :', CONFIG);
-    } catch (error) {
-        console.error('❌ Erreur chargement config:', error);
-    }
-}
-        
 
         // ========================================
-        // CHARGER LES DONNÉES DES WILAYAS
+        // CHARGER LES WILAYAS
         // ========================================
         async function loadWilayasData() {
             try {
@@ -675,7 +612,7 @@ let EMAILJS_CONFIG = {
                 wilayaNames = Object.keys(wilayaData);
                 populateWilayas();
             } catch (error) {
-                console.error('❌ Erreur chargement:', error);
+                console.error('❌ Erreur chargement wilayas:', error);
             }
         }
 
@@ -767,39 +704,36 @@ let EMAILJS_CONFIG = {
         }
 
         // ========================================
-        // ENVOI EMAIL
+        // ENVOI EMAIL VIA EMAILJS
         // ========================================
-// ========================================
-// ENVOI EMAIL VIA EMAILJS
-// ========================================
-async function sendOrderEmail(data, priceDetail) {
-    const templateParams = {
-        client_name: data.fullname,
-        client_phone: data.phone,
-        client_activity: data.activity,
-        client_wilaya: data.wilaya,
-        client_commune: data.commune,
-        quantity: data.quantity,
-        subtotal: priceDetail.subtotal.toLocaleString(),
-        discount: priceDetail.discount > 0 ? `${priceDetail.discount.toLocaleString()} DA` : '',
-        delivery: priceDetail.fee.toLocaleString(),
-        total: priceDetail.total.toLocaleString(),
-        date: new Date().toLocaleString('fr-DZ')
-    };
+        async function sendOrderEmail(data, priceDetail) {
+            const templateParams = {
+                client_name: data.fullname,
+                client_phone: data.phone,
+                client_activity: data.activity,
+                client_wilaya: data.wilaya,
+                client_commune: data.commune,
+                quantity: data.quantity,
+                subtotal: priceDetail.subtotal.toLocaleString(),
+                discount: priceDetail.discount > 0 ? `${priceDetail.discount.toLocaleString()} DA` : '',
+                delivery: priceDetail.fee.toLocaleString(),
+                total: priceDetail.total.toLocaleString(),
+                date: new Date().toLocaleString('fr-DZ')
+            };
 
-    try {
-        const response = await emailjs.send(
-            EMAILJS_CONFIG.service_id,
-            EMAILJS_CONFIG.template_id,
-            templateParams
-        );
-        console.log('✅ Email envoyé avec succès !', response);
-        return { success: true };
-    } catch (error) {
-        console.error('❌ Erreur EmailJS:', error);
-        return { success: false, error: 'Erreur d\'envoi' };
-    }
-}
+            try {
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.service_id,
+                    EMAILJS_CONFIG.template_id,
+                    templateParams
+                );
+                console.log('✅ Email envoyé avec succès !');
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Erreur EmailJS:', error);
+                return { success: false, error: error.text || 'Erreur d\'envoi' };
+            }
+        }
 
         // ========================================
         // FEUX D'ARTIFICE
@@ -937,9 +871,6 @@ async function sendOrderEmail(data, priceDetail) {
             setTimeout(() => { container.innerHTML = ''; }, 6000);
         }
 
-        // ========================================
-        // CÉLÉBRATION
-        // ========================================
         function showCelebration(data, priceDetail) {
             const summary = document.getElementById('order-summary');
             summary.innerHTML = `
@@ -971,7 +902,6 @@ async function sendOrderEmail(data, priceDetail) {
         // INITIALISATION
         // ========================================
         document.addEventListener('DOMContentLoaded', async function() {
-            setupShareButtons();
             console.log('🚀 Initialisation...');
 
             await loadConfig();
@@ -983,6 +913,7 @@ async function sendOrderEmail(data, priceDetail) {
             });
 
             document.getElementById('order-commune').addEventListener('change', calculatePrice);
+
             document.getElementById('quantity').addEventListener('input', function() {
                 let val = parseInt(this.value) || 1;
                 if (val < 1) val = 1;
@@ -1007,7 +938,6 @@ async function sendOrderEmail(data, priceDetail) {
 
             // ===== BOUTON COMMANDER =====
             document.getElementById('submitBtn').addEventListener('click', function() {
-                // Empêcher les doubles clics
                 if (isSubmitting) return;
                 isSubmitting = true;
 
@@ -1016,14 +946,11 @@ async function sendOrderEmail(data, priceDetail) {
                 const activity = document.getElementById('activity').value;
                 const wilaya = document.getElementById('order-wilaya').value;
                 const commune = document.getElementById('order-commune').value;
-                
                 const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
-                // Nettoyer les entrées
                 const cleanName = sanitizeInput(fullname);
                 const cleanPhone = sanitizeInput(phone);
-                
-                // ===== VALIDATIONS AVEC MESSAGES CLAIRS =====
+
                 if (!activity) {
                     alert('⚠️ Veuillez sélectionner votre activité');
                     isSubmitting = false;
@@ -1031,14 +958,14 @@ async function sendOrderEmail(data, priceDetail) {
                 }
 
                 if (cleanName.length < 2) {
-                    alert('⚠️ Veuillez écrire votre nom correctement (au moins 2 caractères)');
+                    alert('⚠️ Veuillez écrire votre nom correctement');
                     isSubmitting = false;
                     return;
                 }
 
                 const cleanPhoneNumber = cleanPhone.replace(/\s/g, '');
                 if (!/^[0-9]{10,11}$/.test(cleanPhoneNumber)) {
-                    alert('⚠️ Veuillez introduire le bon numéro de téléphone (10 ou 11 chiffres)');
+                    alert('⚠️ Numéro de téléphone invalide');
                     isSubmitting = false;
                     return;
                 }
@@ -1055,12 +982,9 @@ async function sendOrderEmail(data, priceDetail) {
                     return;
                 }
 
-
-
-                // Vérifier le honeypot (anti-bot)
                 const website = document.getElementById('website').value;
                 if (website) {
-                    alert('❌ Soumission détectée comme suspecte');
+                    alert('❌ Soumission suspecte');
                     isSubmitting = false;
                     return;
                 }
@@ -1087,14 +1011,14 @@ async function sendOrderEmail(data, priceDetail) {
                         btn.textContent = '✅ Commande envoyée !';
                         setTimeout(() => { btn.textContent = '📩 Commander maintenant'; }, 3000);
                     } else {
-                        alert('❌ Erreur lors de l\'envoi : ' + result.error);
+                        alert('❌ Erreur : ' + result.error);
                         btn.textContent = '📩 Commander maintenant';
                     }
                     btn.disabled = false;
                     isSubmitting = false;
                 }).catch(error => {
                     document.getElementById('loading-overlay').style.display = 'none';
-                    alert('❌ Erreur lors de l\'envoi. Veuillez réessayer.');
+                    alert('❌ Erreur, veuillez réessayer.');
                     btn.textContent = '📩 Commander maintenant';
                     btn.disabled = false;
                     isSubmitting = false;
@@ -1104,60 +1028,6 @@ async function sendOrderEmail(data, priceDetail) {
             calculatePrice();
             console.log('✅ Page prête !');
         });
-// ========================================
-// BOUTONS DE PARTAGE
-// ========================================
-function setupShareButtons() {
-    // Lien actuel de la page
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent('Lecteur CHIFA Zoweetek - 4 990 DA');
-
-    // 1. WhatsApp
-    document.getElementById('share-whatsapp').addEventListener('click', function(e) {
-        e.preventDefault();
-        const message = encodeURIComponent('🖥️ Lecteur CHIFA Zoweetek\n💰 Prix: 4 990 DA\n📦 Livraison à travers toute l\'Algérie\n🔗 ' + window.location.href);
-        window.open('https://wa.me/?text=' + message, '_blank');
-    });
-
-    // 2. Facebook
-    document.getElementById('share-facebook').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
-    });
-
-    // 3. Twitter
-    document.getElementById('share-twitter').addEventListener('click', function(e) {
-        e.preventDefault();
-        const text = encodeURIComponent('🖥️ Lecteur CHIFA à 4 990 DA - Livraison en Algérie !');
-        window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + url, '_blank');
-    });
-
-    // 4. Instagram (ouvre votre profil Instagram)
-    document.getElementById('share-instagram').addEventListener('click', function(e) {
-        e.preventDefault();
-        // Remplacez 'votre_profil' par votre nom d'utilisateur Instagram
-window.open('https://www.instagram.com/lecteur_chifa/', '_blank');
-    });
-
-    // 5. Email
-    document.getElementById('share-email').addEventListener('click', function(e) {
-        e.preventDefault();
-        const subject = encodeURIComponent('Lecteur CHIFA Zoweetek');
-        const body = encodeURIComponent(
-            'Bonjour,\n\nJe vous partage ce produit intéressant :\n\n' +
-            '🖥️ Lecteur CHIFA Zoweetek\n' +
-            '💰 Prix: 4 990 DA\n' +
-            '📦 Livraison à travers toute l\'Algérie\n\n' +
-            '🔗 ' + window.location.href + '\n\n' +
-            'À bientôt !'
-        );
-        window.open('mailto:?subject=' + subject + '&body=' + body, '_blank');
-    });
-}
-
-// Appeler la fonction après le chargement
-// Ajoutez cette ligne dans DOMContentLoaded
-setupShareButtons();
     </script>
 </body>
 </html>
