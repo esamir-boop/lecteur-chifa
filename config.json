@@ -1,9 +1,9 @@
 {
   "produit": {
     "nom": "Lecteur CHIFA Zoweetek",
-    "prix_unitaire": 4890,
+    "prix_unitaire": 4900,
     "description": "Lecteur de carte à puce USB compatible CHIFA",
-    "image": "assets/Generated.jpg"
+    "image": "assets/lecteur.jpg"
   },
   "logo": {
     "image": "assets/logo1.png",
@@ -27,14 +27,7 @@
   },
   "emailjs": {
     "public_key": "tc8CLfJDs3E9-EIQ3",
-    "service_id": "service_su3bqvj",
+    "service_id": "service_hguu30b",
     "template_id": "gn1kcif"
   }
-}
-"produit": {
-  "nom": "Lecteur CHIFA Zoweetek",
-  "prix_unitaire": 4900,
-  "description": "Lecteur de carte à puce USB compatible CHIFA",
-  "image": "assets/Generated.jpg",
-  "version": 2
 }

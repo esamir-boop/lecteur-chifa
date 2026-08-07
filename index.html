@@ -761,38 +761,37 @@ let EMAILJS_CONFIG = {
         // ========================================
         // ENVOI EMAIL
         // ========================================
-        async function sendOrderEmail(data, priceDetail) {
-            const formData = new FormData();
-            formData.append('fullname', data.fullname);
-            formData.append('phone', data.phone);
-            formData.append('activity', data.activity);
-            formData.append('wilaya', data.wilaya);
-            formData.append('commune', data.commune);
-            formData.append('quantity', data.quantity);
-            formData.append('subtotal', priceDetail.subtotal.toLocaleString());
-            if (priceDetail.discount > 0) {
-                formData.append('discount', `- ${priceDetail.discount.toLocaleString()} DA`);
-            }
-            formData.append('delivery', priceDetail.fee.toLocaleString());
-            formData.append('total', priceDetail.total.toLocaleString());
-            formData.append('date', new Date().toLocaleString('fr-DZ'));
+// ========================================
+// ENVOI EMAIL VIA EMAILJS
+// ========================================
+async function sendOrderEmail(data, priceDetail) {
+    const templateParams = {
+        client_name: data.fullname,
+        client_phone: data.phone,
+        client_activity: data.activity,
+        client_wilaya: data.wilaya,
+        client_commune: data.commune,
+        quantity: data.quantity,
+        subtotal: priceDetail.subtotal.toLocaleString(),
+        discount: priceDetail.discount > 0 ? `${priceDetail.discount.toLocaleString()} DA` : '',
+        delivery: priceDetail.fee.toLocaleString(),
+        total: priceDetail.total.toLocaleString(),
+        date: new Date().toLocaleString('fr-DZ')
+    };
 
-            try {
-                const response = await fetch(FORMSPREE_ENDPOINT, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (response.ok) {
-                    return { success: true };
-                } else {
-                    const errorText = await response.text();
-                    throw new Error(`Erreur ${response.status}: ${errorText}`);
-                }
-            } catch (error) {
-                console.error('❌ Erreur:', error);
-                return { success: false, error: error.message };
-            }
-        }
+    try {
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.service_id,
+            EMAILJS_CONFIG.template_id,
+            templateParams
+        );
+        console.log('✅ Email envoyé avec succès !', response);
+        return { success: true };
+    } catch (error) {
+        console.error('❌ Erreur EmailJS:', error);
+        return { success: false, error: 'Erreur d\'envoi' };
+    }
+}
 
         // ========================================
         // FEUX D'ARTIFICE
