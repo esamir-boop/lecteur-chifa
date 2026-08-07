@@ -707,34 +707,25 @@
         // ENVOI EMAIL VIA EMAILJS
         // ========================================
         async function sendOrderEmail(data, priceDetail) {
-            const templateParams = {
-                client_name: data.fullname,
-                client_phone: data.phone,
-                client_activity: data.activity,
-                client_wilaya: data.wilaya,
-                client_commune: data.commune,
-                quantity: data.quantity,
-                subtotal: priceDetail.subtotal.toLocaleString(),
-                discount: priceDetail.discount > 0 ? `${priceDetail.discount.toLocaleString()} DA` : '',
-                delivery: priceDetail.fee.toLocaleString(),
-                total: priceDetail.total.toLocaleString(),
-                date: new Date().toLocaleString('fr-DZ')
-            };
+    const templateParams = {
+        client_name: data.fullname,
+        client_phone: data.phone,
+        total: priceDetail.total.toLocaleString()
+    };
 
-            try {
-                const response = await emailjs.send(
-                    EMAILJS_CONFIG.service_id,
-                    EMAILJS_CONFIG.template_id,
-                    templateParams
-                );
-                console.log('✅ Email envoyé avec succès !');
-                return { success: true };
-            } catch (error) {
-                console.error('❌ Erreur EmailJS:', error);
-                return { success: false, error: error.text || 'Erreur d\'envoi' };
-            }
-        }
-
+    try {
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.service_id,
+            EMAILJS_CONFIG.template_id,
+            templateParams
+        );
+        console.log('✅ Email envoyé !', response);
+        return { success: true };
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        return { success: false, error: error.text || 'Erreur' };
+    }
+}
         // ========================================
         // FEUX D'ARTIFICE
         // ========================================
