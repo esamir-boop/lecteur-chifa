@@ -3,10 +3,10 @@
     "nom": "Lecteur CHIFA Zoweetek",
     "prix_unitaire": 4900,
     "description": "Lecteur de carte à puce USB compatible CHIFA",
-    "image": "assets/Generated.png"
+    "image": "assets/Generated.jpg"
   },
   "logo": {
-    "image": "assets/logo1.png",
+    "image": "assets/logo1.jpg",
     "texte": "Lecteur CHIFA",
     "sous_texte": "Zoweetek"
   },
@@ -25,7 +25,9 @@
     "whatsapp": "213560503228",
     "email": "berchichesamir@gmail.com"
   },
-  "formspree": {
-    "endpoint": "https://formspree.io/f/xjgnqakk"
+  "emailjs": {
+    "public_key": "tc8CLfJDs3E9-EIQ3",
+    "service_id": "service_su3bqvj",
+    "template_id": "gn1kcif"
   }
 }

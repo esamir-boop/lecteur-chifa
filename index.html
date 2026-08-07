@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur CHIFA Zoweetek</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -570,6 +571,14 @@
         let DISCOUNT_PER_EXTRA = 200;
         let MAX_QUANTITY = 4;
         let FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgnqakk';
+// ========================================
+// CONFIGURATION EMAILJS
+// ========================================
+let EMAILJS_CONFIG = {
+    public_key: '',
+    service_id: '',
+    template_id: ''
+};
 
         // ===== SÉCURITÉ =====
         let isSubmitting = false;
@@ -603,6 +612,13 @@
                 DISCOUNT_PER_EXTRA = CONFIG.remise.par_quantite;
                 MAX_QUANTITY = CONFIG.remise.quantite_max;
                 FORMSPREE_ENDPOINT = CONFIG.formspree.endpoint;
+        // Charger EmailJS
+        EMAILJS_CONFIG.public_key = CONFIG.emailjs.public_key;
+        EMAILJS_CONFIG.service_id = CONFIG.emailjs.service_id;
+        EMAILJS_CONFIG.template_id = CONFIG.emailjs.template_id;
+        
+        // Initialiser EmailJS
+        emailjs.init(EMAILJS_CONFIG.public_key);
                 
                 // Mettre à jour le produit
                 document.getElementById('product-name').textContent = CONFIG.produit.nom;
